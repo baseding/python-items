@@ -1,0 +1,1637 @@
+function signatureChange(){
+	if($("#selectMessageId  option:selected").val()==1){
+		$("#signatureWordId").show();
+		$("#smsBaseLengthLabelId").show();
+		$("#expandLengthLabelId").show();
+		$("#smsBaseLengthId").val('');
+	}else{
+		$("#signatureWordId").hide();
+		$("#smsBaseLengthLabelId").hide();
+		$("#expandLengthLabelId").hide();
+		$("#smsBaseLengthId").val(70);
+		$("#signatureId").val('');
+		$("#expandLengthId").val('');
+	}
+}
+function ajaxButton(urlVal, formId, returnDivId) {
+	$("#immediatelySendButtonId").attr("disabled", true);
+	$("#immediatelySendButtonId").unbind("click");
+	$("#immediatelySendTrendsId").show();
+	$.ajax({
+		type : "POST",
+		url : urlVal,
+		data : $("#" + formId).serialize(),
+		success : function(text) {
+			$("#" + returnDivId).html(text);
+			$("#immediatelySendButtonId").attr("disabled", true);
+			$("#immediatelySendButtonId").unbind("click");
+			$("#immediatelySendTrendsId").hide();
+			$("#uploadingSignId").val(false);//上传是否成功标识 
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+	return false;
+}
+
+function dialog(cover, urlVal, dialogId, width, height, title, formId,
+		closeEvents) {
+	$("#" + dialogId).dialog({
+		autoOpen : false,
+		modal : cover,
+		bgiframe:true,
+		width : width,
+		height : height,
+		title : title,
+		resizable: false,
+		close : function() {
+			if (closeEvents) {
+				$("#" + formId).submit();
+			}
+		}
+	});
+	$.ajax({
+		type : "POST",
+		url : urlVal,
+		data : $("#" + formId).serialize(),
+		// contentType : "text/plain",
+		// dataType : "text",
+		success : function(text) {
+			$("#" + dialogId).html(text);
+			$("#" + dialogId).dialog("open");
+		},
+		error : function(e) {
+			alert("Error" + e);
+		}
+	});
+	return false;
+}
+
+/**
+ * 短信发送上传_改变事件
+ */
+function uploadChange(){
+    $("#uploadingSignId").val(false);//上传是否成功标识 
+}
+
+
+function xhr2(){    
+    var xhr = new XMLHttpRequest();//第一步    
+    //定义表单变量    
+    var file = document.getElementById('fileToUpload').files;    
+    //console.log(file.length);    
+    //新建一个FormData对象    
+    var formData = new FormData(); //++++++++++    
+    //追加文件数据    
+    for(var i=0;i<file.length;i++){      
+         formData.append("file"+i+"", file[i]); //++++++++++    
+    }      
+    //formData.append("file", file[0]); //++++++++++    
+        
+    //post方式    
+    xhr.open('POST', '/esmsSend/smsSendUpload'); //第二步骤    
+    //发送请求    
+    xhr.send(formData);  //第三步骤    
+    //ajax返回    
+    xhr.onreadystatechange = function(){ //第四步    
+        　　　　if ( xhr.readyState == 4 && xhr.status == 200 ) { 
+        	var hint = '';
+        	var strs= new Array()
+        	if("{'message':'upload_fail'}"==xhr.responseText){
+        		hint = geti18n('upload_fail');
+        	}else{
+        		hint = "上传成功";
+        		var html = $("#uploaded").html();
+        		var arrays = new Array();
+        		var resText = xhr.responseText;
+        		arrays = resText.split(",");
+        		for(var i=0;i<arrays.length;i++){
+        			var str = arrays[i];
+        			var arr = str.split("/");
+        			var name = arr[0];
+        			var val = arr[1];
+        			html += "<div class='dianji' style='float: left;margin:20px' name='"+val+"'>" + name + "</div>";
+        		}
+        		$("#uploaded").html(html);
+        		$(".dianji").click(function() {
+        			var d$ = $(this);
+        	        var name = $(this).attr('name');
+        	        var val = $(this).text();
+        	        $.ajax({
+        	    		type : "POST",
+        	    		url : '/esmsSend/smsSendDelete',
+        	    		data : {'file':name},
+        	    		success : function(data) {
+        	    			d$.remove();
+        	    			$("#loading").hide();
+        	              	$("#uploadingWarnId").html("<div class='alert alert-error'>" +
+        	    						"<button type='button' class='close' data-dismiss='alert'>&times;</button>"+ val +data +"</div>");
+        	              	$("#uploadingWarnId").show();
+        	              	if(""==$("#uploaded").html()){
+        	              		$("#uploadingSignId").val(false);//上传是否成功标识
+        	              	}else{
+        	              		$("#uploadingSignId").val(true);//上传是否成功标识
+        	              	}
+        	              	$("#alertMessageId").hide();
+        	    		},
+        	    		error : function(e) {
+        	    			$("#loading").hide();
+        	    			$("#uploadingWarnId").html("<div class='alert alert-error'>" +
+        	    				"<button type='button' class='close' data-dismiss='alert'>&times;</button>" + "删除失败" +
+        	    			"</div>");
+        	    			$("#uploadingWarnId").show();
+        	    			$("#uploadingSignId").val(false);
+        	    		}
+        	    	});
+        	   });
+        	}
+        	$("#loading").hide();
+          	$("#uploadingWarnId").html("<div class='alert alert-error'>" +
+						"<button type='button' class='close' data-dismiss='alert'>&times;</button>"+ hint +"</div>");
+          	$("#uploadingWarnId").show();
+          	$("#uploadingSignId").val(true);//上传是否成功标识
+          	$("#alertMessageId").hide();//将错误提示消息隐藏
+        　　　　}else{
+        	$("#loading").hide();
+			$("#uploadingWarnId").html("<div class='alert alert-error'>" +
+				"<button type='button' class='close' data-dismiss='alert'>&times;</button>" +geti18n('upload_fail')+
+			"</div>");
+			$("#uploadingWarnId").show();
+			$("#uploadingSignId").val(false);//上传是否成功标识 
+        　　　　}
+        　};    
+        //设置超时时间    
+    xhr.timeout = 100000;    
+    xhr.ontimeout = function(event){    
+　　　	alert('请求超时！');    
+　　	}     
+}    
+
+
+/**
+ * 短信发送上传 
+ */
+function uploading(){
+	//上传文件
+	var file = document.getElementById('fileToUpload').files;
+	var flag = false;
+	if(file) {
+		var $uploaded = $("#uploaded").children();
+		if(file.length+$uploaded>10){
+			$("#uploadingWarnId")
+			.html(
+					"<div class='alert alert-error' id=''>"
+							+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+							+ "<strong>" + "上传总数不得超过十个"
+							+ "</strong>" + "</div>");
+			$("#uploadingWarnId").show();
+		}
+		for(var i=0;i<file.length;i++){
+			var fileName = file[i].name;
+			var fileType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
+			var $uploaded = $("#uploaded").children();
+			var value = $uploaded.text();
+			if(value!=''&&value.indexOf(fileName)>=0){
+				console.log(fileName+"-"+value);
+				//不可上传相同的文件
+				$("#uploadingWarnId")
+				.html(
+						"<div class='alert alert-error' id=''>"
+								+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+								+ "<strong>" + "不可上传相同的文件"
+								+ "</strong>" + "</div>");
+				$("#uploadingWarnId").show();
+				$("#uploadingSignId").val(true);
+				return;
+			}
+			
+			//验证文件扩展名
+			flag = checkFileExtendName(fileType);
+			if(!flag){
+				return;
+			}
+		}
+		if(!flag) {
+			$("#uploadingWarnId")
+					.html(
+							"<div class='alert alert-error' id=''>"
+									+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+									+ "<strong>" + geti18n('not_Format')
+									+ "</strong>" + "</div>");
+			$("#uploadingWarnId").show();
+		} else {
+			$("#loading").show();
+			$("#uploadingWarnId").hide();
+			//发送请求
+			xhr2();
+		}
+	} else {
+		$("#uploadingWarnId").html(
+						"<div class='alert alert-error' id=''>"
+								+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+								+ "<strong>" + geti18n('upload_warning') + "</strong>"
+								+ "</div>");
+		$("#uploadingWarnId").show();
+	}
+}
+		
+	
+	//上传文件
+/*	var fileName = $("#fileToUpload").val();
+	if(fileName) {
+		var fileType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
+		//验证文件扩展名
+		var flag = checkFileExtendName(fileType);
+		if(!flag) {
+			$("#uploadingWarnId")
+					.html(
+							"<div class='alert alert-error' id=''>"
+									+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+									+ "<strong>" + geti18n('not_Format')
+									+ "</strong>" + "</div>");
+			$("#uploadingWarnId").show();
+		} else {
+			$("#loading").show();
+			$("#uploadingWarnId").hide();
+			$.ajaxFileUpload({
+			          url:'/esmsSend/smsSendUpload',
+			          secureuri:false,
+			          fileElementId:'fileToUpload',
+			          dataType: 'json',
+			          success: function (data, status)
+			          {
+			        	$("#loading").hide();
+			          	$("#uploadingWarnId").html("<div class='alert alert-error'>" +
+									"<button type='button' class='close' data-dismiss='alert'>&times;</button>"+ geti18n(data.message) +"</div>");
+			          	$("#uploadingWarnId").show();
+			          	$("#uploadingSignId").val(true);//上传是否成功标识
+			          	$("#alertMessageId").hide();//将错误提示消息隐藏
+			          },
+			          error: function (data, status, e)
+			          {
+				        $("#loading").hide();
+				        $("#uploadingWarnId").html("<div class='alert alert-error'>" +
+								"<button type='button' class='close' data-dismiss='alert'>&times;</button>" +geti18n('upload_fail')+
+							"</div>");
+				        $("#uploadingWarnId").show();
+				        $("#uploadingSignId").val(false);//上传是否成功标识 
+			          }
+			      }
+			  );
+		}
+	} else {
+		$("#uploadingWarnId").html(
+						"<div class='alert alert-error' id=''>"
+								+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+								+ "<strong>" + geti18n('upload_warning') + "</strong>"
+								+ "</div>");
+		$("#uploadingWarnId").show();
+	}*/
+
+
+/**
+ * 预览 
+ * @param cover
+ * @param urlVal
+ * @param dialogId
+ * @param width
+ * @param height
+ * @param title
+ * @param formId
+ * @param para1
+ * @param para2
+ * @param alertMessageId
+ * @returns {Boolean}
+ */
+function dialogSubmit(cover, urlVal, dialogId, width, height, title, formId,para1,para2,alertMessageId) {
+	//增加任务标题长度验证
+	if($.trim($("#taskSubject").val())==''){
+		$("#" + alertMessageId)
+		.html(
+				"<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + geti18n('taskSubjectRequired')
+						+ "</strong>" + "</div>");
+		$("#" + alertMessageId).show();
+		return;
+	} else if($("#taskSubject").val().length>50){
+		$("#" + alertMessageId)
+		.html(
+				"<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + geti18n('taskSubjectLength')
+						+ "</strong>" + "</div>");
+		$("#" + alertMessageId).show();
+		return;
+	}
+	// Bug#8329: 短信发送，彩信发送页面勾选定时时间但没设置时间没提示
+	if ($("#timingSendCheckbox").is(":checked") && ($("#sttime").val() == null || $("#sttime").val() == "")) {
+		$("#" + alertMessageId)
+		.html(
+				"<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + geti18n('atTimeCanNotBeEmptyRemind')
+						+ "</strong>" + "</div>");
+		$("#" + alertMessageId).show();
+		return;
+	}
+	
+	$("#" + dialogId).dialog({
+		autoOpen : false,
+		modal : cover,
+		bgiframe:true,
+		width : width,
+		height : height,
+		title : title
+	});
+	var contentTypeValue = $('input[name=contentType]:checked').val();
+	$.ajax({
+		type : "POST",
+		url : "/esmsSend/checkAtTime",
+		data : {
+			"atTime" : $("#sttime").val()
+		},
+		success : function(text) {
+			if(!text) {
+				$("#" + alertMessageId)
+				.html("<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + geti18n('atTimeRemind')
+						+ "</strong>" + "</div>");
+				$("#" + alertMessageId).show();
+			} else if(!($("#pageTextareaId").is(":hidden"))) {
+				//页面填写
+				$.ajax({
+					type : "POST",
+					url : "/esmsSend/focusout",
+					data : $("#form_previewId").serialize(),
+					success : function(text) {
+						if (text) {
+							$("#" + alertMessageId)
+							.html(
+									"<div class='alert alert-error'>"
+											+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+											+ "<strong>" + geti18n(text)
+											+ "</strong>" + "</div>");
+							$("#" + alertMessageId).show();
+						} else if ($("#templateContentId").val() == null || $("#templateContentId").val() == "") {
+							$("#" + alertMessageId)
+							.html(
+									"<div class='alert alert-error'>"
+											+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+											+ "<strong>" + geti18n('select_content')//请选择发送模版或填写发送内容
+											+ "</strong>" + "</div>");
+							$("#" + alertMessageId).show();
+						} else {
+							//审核
+							var para3 = $("#" + para1).val();
+							var para4 = $("#" + para2).text();
+							if(!para3) {
+								$("#" + alertMessageId)
+								.html(
+										"<div class='alert alert-error'>"
+												+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+												+ "<strong>" + geti18n('billing_account')//未选择计费账号，选择计费账号后才能预览
+												+ "</strong>" + "</div>");
+								$("#" + alertMessageId).show();
+							} else if(para4 <= 0) {
+								$("#" + alertMessageId)
+								.html(
+										"<div class='alert alert-error'>"
+												+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+												+ "<strong>" + geti18n('insufficient_balance')//此计费账号余额不足,暂不能发送
+												+ "</strong>" + "</div>");
+								$("#" + alertMessageId).show();
+							} else {
+								$.ajax({
+									type : "POST",
+									url : urlVal,
+									data : $("#" + formId).serialize(),
+									success : function(text) {
+										$("#" + dialogId).html(text);
+										$("#" + dialogId).dialog("open");
+									},
+									error : function(e) {
+										alert("Error" + e);
+									}
+								});
+								$("#" + alertMessageId).hide();
+								return false;
+							}
+						}
+					},
+					error : function(e) {
+						alert("Error:" + e);
+					}
+				});
+			} else if(!($("#uploadingId").is(":hidden"))) {
+				//判断上传标识是否为 true/成功
+				var uploadingSign=false;
+				if($("#uploadingSignId").val()=="true"){
+					uploadingSign=true;
+				} 
+				if(!uploadingSign){
+					$("#" + alertMessageId).html(
+							"<div class='alert alert-error'>"
+									+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+									+ "<strong>"+geti18n('upload_successfully_Preview')+"</strong></div>");//请先上传文件成功后,在预览!
+					$("#" + alertMessageId).show();
+				}else{
+					if (($("#templateContentId").val() == null || $("#templateContentId").val() == "") && contentTypeValue != 2) {
+						$("#" + alertMessageId)
+						.html(
+								"<div class='alert alert-error'>"
+										+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+										+ "<strong>" + geti18n('select_content')
+										+ "</strong>" + "</div>");//请选择发送模版或填写发送内容
+						$("#" + alertMessageId).show();
+					} else {
+						//审核_计费账号必须_及其计费账号余额不能为0
+						var para3 = $("#" + para1).val();
+						var para4 = $("#" + para2).text();
+						if(!para3) {
+							$("#" + alertMessageId)
+							.html(
+									"<div class='alert alert-error'>"
+											+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+											+ "<strong>" + geti18n('billing_account2')//未选择计费账号，选择计费账号后才能预览，发送
+											+ "</strong>" + "</div>");
+							$("#" + alertMessageId).show();
+						} else if(para4 <= 0) {
+							$("#" + alertMessageId)
+							.html(
+									"<div class='alert alert-error'>"
+											+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+											+ "<strong>" + geti18n('insufficient_balance')
+											+ "</strong>" + "</div>");//此计费账号余额不足,暂不能发送
+							$("#" + alertMessageId).show();
+						} else {
+							//判断上传标识是否为 true/成功
+							var uploadingSign=false;
+							if($("#uploadingSignId").val()=="true"){
+								uploadingSign=true;
+							} 
+							if(uploadingSign){
+					          	$("#" + dialogId).html("<center><h5><img src='../../images/loading.gif' />" + geti18n('open_preview') + "</h5></center>");//正在打开预览,请稍后... ...
+								$("#" + dialogId).dialog("open");
+								$("#" + alertMessageId).hide();//将提示消息隐藏
+								$("#uploadingWarnId").hide();//将上传提示消息隐藏
+								$.ajax({
+									type : "POST",
+									url : urlVal,
+									data : $("#" + formId).serialize(),
+									success : function(text) {
+										$("#" + dialogId).html(text);
+									},
+									error : function(e) {
+										alert("Error" + e);
+									}
+								});
+								return false;
+							}else{
+								$("#" + alertMessageId).html(
+										"<div class='alert alert-error'>"
+												+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+												+ "<strong>" + geti18n('upload_preview') + "</strong></div>");//请先上传文件,在预览!
+								$("#" + alertMessageId).show();
+							}
+						}
+					}
+				}
+			} else if(!($("#communicationId").is(":hidden"))) {
+				if(!($("input[name=contactlist]").is(":checked"))) {
+					$("#" + alertMessageId)
+					.html(
+							"<div class='alert alert-error'>"
+									+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+									+ "<strong>" + geti18n('distribution_group')//请选择发送短信的通讯组
+									+ "</strong>" + "</div>");
+					$("#" + alertMessageId).show();
+				} else if (($("#templateContentId").val() == null || $("#templateContentId").val() == "") && contentTypeValue != 2) {
+					$("#" + alertMessageId)
+					.html(
+							"<div class='alert alert-error'>"
+									+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+									+ "<strong>" + geti18n('select_content')//请选择发送模版或填写发送内容
+									+ "</strong>" + "</div>");
+					$("#" + alertMessageId).show();
+				} else {
+					var para3 = $("#" + para1).val();
+					var para4 = $("#" + para2).text();
+					if(!para3) {
+						$("#" + alertMessageId)
+						.html(
+								"<div class='alert alert-error'>"
+										+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+										+ "<strong>" + geti18n('billing_account')//未选择计费账号，选择计费账号后才能预览
+										+ "</strong>" + "</div>");
+						$("#" + alertMessageId).show();
+					} else if(para4 <= 0) {
+						$("#" + alertMessageId)
+						.html(
+								"<div class='alert alert-error'>"
+										+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+										+ "<strong>" + geti18n('insufficient_balance')//此计费账号余额不足,暂不能发送
+										+ "</strong>" + "</div>");
+						$("#" + alertMessageId).show();
+					} else {
+						$.ajax({
+							type : "POST",
+							url : urlVal,
+							data : $("#" + formId).serialize(),
+							success : function(text) {
+								$("#" + dialogId).html(text);
+								$("#" + dialogId).dialog("open");
+							},
+							error : function(e) {
+								alert("Error" + e);
+							}
+						});
+						$("#" + alertMessageId).hide();
+						return false;
+					}
+				}
+				} else if(!($("#selectContactsId").is(":hidden"))) {
+	                if($("#rightListBoxId option").length <= 0) {
+	                    $("#" + alertMessageId)
+	                    .html(
+	                            "<div class='alert alert-error'>"
+	                                    + "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+	                                    + "<strong>" + geti18n('distribution_contacts')
+	                                    + "</strong>" + "</div>");//请选择发送短信的通讯组
+	                    $("#" + alertMessageId).show();
+                    } else if ($("#rightListBoxId option").length > 100){
+                      $("#" + alertMessageId)
+                      .html(
+                              "<div class='alert alert-error'>"
+                                      + "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+                                      + "<strong>" + geti18n('distribution_contacts_long')
+                                      + "</strong>" + "</div>");// 最多可以选择 100 个联系人
+                      $("#" + alertMessageId).show();
+	                } else if (($("#templateContentId").val() == null || $("#templateContentId").val() == "") && contentTypeValue != 2) {
+	                    $("#" + alertMessageId)
+	                    .html(
+	                            "<div class='alert alert-error'>"
+	                                    + "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+	                                    + "<strong>" + geti18n('select_content')//请选择发送模版或填写发送内容
+	                                    + "</strong>" + "</div>");
+	                    $("#" + alertMessageId).show();
+	                } else {
+	                    var para3 = $("#" + para1).val();
+	                    var para4 = $("#" + para2).text();
+	                    if(!para3) {
+	                        $("#" + alertMessageId)
+	                        .html(
+	                                "<div class='alert alert-error'>"
+	                                        + "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+	                                        + "<strong>" + geti18n('billing_account')//未选择计费账号，选择计费账号后才能预览
+	                                        + "</strong>" + "</div>");
+	                        $("#" + alertMessageId).show();
+	                    } else if(para4 <= 0) {
+	                        $("#" + alertMessageId)
+	                        .html(
+	                                "<div class='alert alert-error'>"
+	                                        + "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+	                                        + "<strong>" + geti18n('insufficient_balance')//此计费账号余额不足,暂不能发送
+	                                        + "</strong>" + "</div>");
+	                        $("#" + alertMessageId).show();
+	                    } else {
+                          // 选中客户选择的联系人
+                          selectContacts();
+	                        $.ajax({
+	                            type : "POST",
+	                            url : urlVal,
+	                            data : $("#" + formId).serialize(),
+	                            success : function(text) {
+	                                $("#" + dialogId).html(text);
+	                                $("#" + dialogId).dialog("open");
+	                            },
+	                            error : function(e) {
+	                                alert("Error" + e);
+	                            }
+	                        });
+	                        $("#" + alertMessageId).hide();
+	                        return false;
+	                    }
+	                }
+			} else {
+			  
+			}
+		},
+		error : function(e) {
+			alert("Error" + e);
+		}
+	});
+}
+
+function refresh(formId , paraFormId) {
+	if (null != paraFormId) {
+		$("#" + formId)[0].action = $("#" + formId)[0].action + "?" + $("#" + paraFormId).serialize();
+	} else {
+		$("#" + formId)[0].action = $("#" + formId)[0].action;
+	}
+	
+	$("#" + formId)[0].submit();
+	
+}
+
+
+// 删除
+function deleteMethod(urlVal, divID, content, formId, optionForm) {
+	//
+	return deleteIcon(urlVal, divID, content, formId, optionForm);
+//	if (confirm(content)) {
+//		$
+//				.ajax({
+//					type : "POST",
+//					url : urlVal,
+//					success : function(text) {
+//						$("#" + divID)
+//								.html(
+//										"<div class='alert alert-error'>"
+//												+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+//												+ "<strong>" + text
+//												+ "</strong>" + "</div>");
+//						refresh(formId, optionForm);
+//					},
+//					error : function(e) {
+//						alert("Error:" + e);
+//					}
+//				});
+//		return false;
+//	}
+}
+
+function remindFile(urlVal, formId,id,divId,fileId) {
+	if(fileId) {
+		//上传文件
+		var fileName = $("#"+fileId).val();
+		if(fileName) {
+			var fileType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
+			var flag = checkFileExtendName(fileType);
+			if(!flag) {
+				$("#" + divId)
+				.html(
+						"<div class='alert alert-error' id="+divId+">"
+								+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+								+ "<strong>" + geti18n('not_Format')//上传文件不支持此格式,请填写'txt,csv,xls,xlsx'格式
+								+ "</strong>" + "</div>");
+			} else {
+				$("#loading").show();
+				var options = {
+						type : "POST",
+						url : urlVal,
+						data : $("#" + formId).serialize(),
+						success : function(response) {
+							$("#loading").hide();
+							if(divId) {
+								$("#" + divId)
+								.html(
+										"<div class='alert alert-error' id="+divId+">"
+												+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+												+ "<strong>" + response
+												+ "</strong>" + "</div>");
+							} else {
+								$("#" + formId).replaceWith(response);
+							}
+							if(!(response == '请勾选导入参数' || response == '请选择要导入联系人所属的通讯组' || response == '导入参数中号码必选')) {
+								$("#" + id).attr("disabled", true);					
+								$("#" + id).unbind("click");
+							}
+						}
+					};
+					$("#" + formId).ajaxSubmit(options);
+			}
+		} else {
+			$("#" + divId)
+			.html(
+					"<div class='alert alert-error' id="+divId+">"
+							+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+							+ "<strong>" + geti18n('upload_warning')//请选择要上传的文件
+							+ "</strong>" + "</div>");
+		}	
+	} else {
+		var options = {
+				type : "POST",
+				url : urlVal,
+				data : $("#" + formId).serialize(),
+				async:true,
+				success : function(response) {
+					if(divId) {
+						$("#" + divId)
+						.html(
+								"<div class='alert alert-error' id="+divId+">"
+										+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+										+ "<strong>" + response
+										+ "</strong>" + "</div>");
+					} else {
+						$("#" + formId).replaceWith(response);
+					}
+				}
+			};
+			$("#" + formId).ajaxSubmit(options);
+	}
+}
+
+function templateName(templateName, url) {
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : {
+			"templateName" : templateName
+		},
+		success : function(text) {
+			$("#templateContentId").val(text);
+			$("#alphanumeric").html(geti18n('sms_number') + Number($("#templateContentId").val().length + countInstances($("#templateContentId").val(),"\n")) + geti18n('sms_number_prompt'));//短信字数:{0}（短信计费条数与短信签名及运营商短信通道有关，实扣条数按运营商计费条数为准，此计费条数为估算，仅供参考，不作为对帐依据。如有疑问，请与客户经理联系）
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+	return false;
+}
+function submitForm(urlVal, formId, paraFormId,page,id,imgId) {
+	$("#" + id).attr("disabled", true);
+	$("#" + id).unbind("click");
+	$("#" + imgId).show();
+	var exportForm = document.getElementById(formId);
+	if (paraFormId == null) {
+		exportForm.action = urlVal;
+	} else {
+		if (null != page) {
+			exportForm.action = urlVal +"?page=" + page +"&" + $("#" + paraFormId).serialize();
+		} else {
+			exportForm.action = urlVal+"?" + $("#" + paraFormId).serialize();
+		}
+	}
+	exportForm.submit();
+}
+
+// SMS send page dynamic effect
+function smsSebdDtbanuc() {
+	$('input[name=targetType]').get(0).checked=true;
+	$('input[name=contentType]').get(0).checked=true;
+	$("#esmsSendTrendsWarnId").hide();// 动态模板的提示
+	$("#pageFillId").show();// 页面填写
+	$("#uploadingId").hide();// 导入
+	$("#communicationId").hide();// 通讯组
+    $("#selectContactsId").hide();// 选择联系人
+	$('input[name=contentType]').get(1).disabled=true;// 不同内容
+	$('input[name=contentType]').get(2).disabled=true;// 动态内容
+	$("input[name=targetType]").bind("click", function() {
+		var value = $('input[name=targetType]:checked').val();// name=targetType页面填写_导入文件
+		if (value == 1) {
+			$("#pageFillId").show();
+			$("#uploadingId").hide();
+			$("#communicationId").hide();
+            $("#selectContactsId").hide();
+			$("#uploadId").attr("disabled", true);
+			$('input[name=contentType]').get(1).disabled=true;
+			$('input[name=contentType]').get(2).disabled=true;
+			$('input[name=contentType]').get(0).checked = true;
+			var contentTypeValue = $('input[name=contentType]:checked').val();// name=contentType_相同内容_不同内容_动态内容
+			if (contentTypeValue == 1) {
+				$.ajax({
+					type : "POST",
+					url : '/esmsSend/dynamicTemplate',
+					data : {
+						"type" : 'S'
+					},
+					success : function(text) {
+				 		  var select = document.getElementById('templateId');
+						  while(select.options.length >0) {
+							  select.options.remove(select.options[0]);
+						  }
+						  var option = new Option();
+						  select.add(option);
+						  $.each(text,function(i,n){
+							  var option = new Option(text[i]);
+							  select.add(option);
+							  });
+						  $("#templateContentId").val("");
+					},
+					error : function(e) {
+						alert("Error:" + e);
+					}
+				});
+				$("#templateTrId").show();
+				$("#contentTrId").show();
+				$("#esmsSendTrendsWarnId").hide();
+				$("#templateId").attr("disabled", false);
+				$("#templateContentId").attr("disabled", false);
+				$("#targetUniqueFlagCheckbox").attr("disabled", false);//号码是否去重
+			}
+		} else if (value == 2) {
+			$("#pageFillId").hide();
+			$("#uploadingId").show();
+			$("#communicationId").hide();
+            $("#selectContactsId").hide();
+			$("#uploadId").attr("disabled", false);
+			$('input[name=contentType]').get(1).disabled=false;
+			$('input[name=contentType]').get(2).disabled=false;
+			$('input[name=contentType]').get(0).checked = true;
+			var contentTypeValue = $('input[name=contentType]:checked').val();// name=contentType_相同内容_不同内容_动态内容
+			if (contentTypeValue == 1) {
+				$.ajax({
+					type : "POST",
+					url : '/esmsSend/dynamicTemplate',
+					data : {
+						"type" : 'S'
+					},
+					success : function(text) {
+				 		  var select = document.getElementById('templateId');
+						  while(select.options.length >0) {
+							  select.options.remove(select.options[0]);
+						  }
+						  var option = new Option();
+						  select.add(option);
+						  $.each(text,function(i,n){
+							  var option = new Option(text[i]);
+							  select.add(option);
+							  });
+						  $("#templateContentId").val("");
+					},
+					error : function(e) {
+						alert("Error:" + e);
+					}
+				});
+				$("#templateTrId").show();
+				$("#contentTrId").show();
+				$("#esmsSendTrendsWarnId").hide();
+				$("#templateId").attr("disabled", false);
+				$("#templateContentId").attr("disabled", false);
+				$("#targetUniqueFlagCheckbox").attr("disabled", false);//号码是否去重
+			}
+        } else if (value == 3) {
+			$("#pageFillId").hide();
+			$("#uploadingId").hide();
+			$("#communicationId").show();
+	        $("#selectContactsId").hide();
+			$('input[name=contentType]').get(1).disabled=true;
+			$('input[name=contentType]').get(2).disabled=true;
+			$('input[name=contentType]').get(0).checked = true;
+			var contentTypeValue = $('input[name=contentType]:checked').val();// name=contentType_相同内容_不同内容_动态内容
+			if (contentTypeValue == 1) {
+				$.ajax({
+					type : "POST",
+					url : '/esmsSend/dynamicTemplate',
+					data : {
+						"type" : 'S'
+					},
+					success : function(text) {
+				 		  var select = document.getElementById('templateId');
+						  while(select.options.length >0) {
+							  select.options.remove(select.options[0]);
+						  }
+						  var option = new Option();
+						  select.add(option);
+						  $.each(text,function(i,n){
+							  var option = new Option(text[i]);
+							  select.add(option);
+							  });
+						  $("#templateContentId").val("");
+					},
+					error : function(e) {
+						alert("Error:" + e);
+					}
+				});
+				$("#templateTrId").show();
+				$("#contentTrId").show();
+				$("#esmsSendTrendsWarnId").hide();
+				$("#templateId").attr("disabled", false);
+				$("#templateContentId").attr("disabled", false);
+				$("#targetUniqueFlagCheckbox").attr("disabled", false);//号码是否去重
+			}
+	     } else if (value == 4) {
+           $("#pageFillId").hide();
+           $("#uploadingId").hide();
+           $("#communicationId").hide();
+           $("#selectContactsId").show();
+           $("#uploadId").attr("disabled", true);
+           $('input[name=contentType]').get(1).disabled=true;
+           $('input[name=contentType]').get(2).disabled=true;
+           $('input[name=contentType]').get(0).checked = true;
+           
+           var contentTypeValue = $('input[name=contentType]:checked').val();// name=contentType_相同内容_不同内容_动态内容
+           if (contentTypeValue == 1) {
+               $.ajax({
+                   type : "POST",
+                   url : '/esmsSend/dynamicTemplate',
+                   data : {
+                       "type" : 'S'
+                   },
+                   success : function(text) {
+                         var select = document.getElementById('templateId');
+                         while(select.options.length >0) {
+                             select.options.remove(select.options[0]);
+                         }
+                         var option = new Option();
+                         select.add(option);
+                         $.each(text,function(i,n){
+                             var option = new Option(text[i]);
+                             select.add(option);
+                             });
+                         $("#templateContentId").val("");
+                   },
+                   error : function(e) {
+                       alert("Error:" + e);
+                   }
+               });
+               $("#templateTrId").show();
+               $("#contentTrId").show();
+               $("#esmsSendTrendsWarnId").hide();
+               $("#templateId").attr("disabled", false);
+               $("#templateContentId").attr("disabled", false);
+               $("#targetUniqueFlagCheckbox").attr("disabled", false);//号码是否去重
+           }
+	     } else {
+	     }
+	});
+	$("input[name=contentType]").bind("click", function() {
+		var contentTypeValue = $('input[name=contentType]:checked').val();// name=contentType_相同内容_不同内容_动态内容
+		if (contentTypeValue == 1) {
+			$.ajax({
+				type : "POST",
+				url : '/esmsSend/dynamicTemplate',
+				data : {
+					"type" : 'S'
+				},
+				success : function(text) {
+			 		  var select = document.getElementById('templateId');
+					  while(select.options.length >0) {
+						  select.options.remove(select.options[0]);
+					  }
+					  var option = new Option();
+					  select.add(option);
+					  $.each(text,function(i,n){
+						  var option = new Option(text[i]);
+						  select.add(option);
+						  });
+					  $("#templateContentId").val("");
+				},
+				error : function(e) {
+					alert("Error:" + e);
+				}
+			});
+			$("#templateTrId").show();
+			$("#contentTrId").show();
+			$("#esmsSendTrendsWarnId").hide();
+			$("#templateId").attr("disabled", false);
+			$("#templateContentId").attr("disabled", false);
+			$("#targetUniqueFlagCheckbox").attr("disabled", false);//号码是否去重
+		} else if (contentTypeValue == 2) {
+			$("#esmsSendTrendsWarnId").hide();
+			$("#templateTrId").hide();
+			$("#contentTrId").hide();
+			$("#targetUniqueFlagCheckbox").attr("disabled", true);//号码是否去重
+			$("#targetUniqueFlagCheckbox").attr("checked", false);//号码是否去重
+			if (!$("targetUniqueFlagCheckbox").is(":checked")) {
+				$("#targetUniqueFlag").attr("disabled", true);
+			}
+		} else {
+			$.ajax({
+				type : "POST",
+				url : '/esmsSend/dynamicTemplate',
+				data : {
+					"type" : 'D'
+				},
+				success : function(text) {
+			 		  var select = document.getElementById('templateId');
+					  while(select.options.length >0) {
+						  select.options.remove(select.options[0]);
+					  }
+					  var option = new Option();
+					  select.add(option);
+					  $.each(text,function(i,n){
+						  var option = new Option(text[i]);
+						  select.add(option);
+						  });
+					  $("#templateContentId").val("");
+				},
+				error : function(e) {
+					alert("Error:" + e);
+				}
+			});
+			$("#templateTrId").show();
+			$("#contentTrId").show();
+			$("#esmsSendTrendsWarnId").show();
+			$("#templateId").attr("disabled", false);
+			$("#templateContentId").attr("disabled", false);
+			$("#targetUniqueFlagCheckbox").attr("disabled", true);//号码是否去重
+			$("#targetUniqueFlagCheckbox").attr("checked", false);//号码是否去重
+			if (!$("targetUniqueFlagCheckbox").is(":checked")) {
+				$("#targetUniqueFlag").attr("disabled", true);
+			}
+		}
+	});
+}
+// SMS alphanumeric limit
+function alphanumeric() {
+	$("#templateContentId").bind("keyup",function() {
+			var maxLength = 500;
+			if ($("#contentFormatFlagCheckbox").is(":checked")) {
+				maxLength = 1000;
+			}
+
+			// https://forum.jquery.com/topic/domelem-value-length-returns-different-value-than-domelem-val-length
+			
+			var content = $("#templateContentId").val();
+			var matches = content.match(/\n/g);
+			var lineFeeds = matches == null ? 0 : matches.length;
+			if(content.length + lineFeeds > maxLength) {
+				$("#templateContentId").val(content.substring(0, maxLength - lineFeeds));
+			}
+
+//			if (countentLength <= $("#smsBaseLength").val()) {
+//				$("#alphanumeric").css("color", "black");
+//				$("#alphanumeric").html(
+//						'\u77ed\u4fe1\u5b57\u6570:' + countentLength
+//				);
+//			} else {
+
+			content = $("#templateContentId").val();
+			matches = content.match(/\n/g);
+			lineFeeds = matches == null ? 0 : matches.length;
+			
+			$("#alphanumeric").html(geti18n('sms_number') + (content.length + lineFeeds) + geti18n('sms_number_prompt'));
+//			$("#alphanumeric").css("color", "red");
+//		}
+	});
+};
+
+/**
+ * 判断一个字符在另一个字符串中出现过几次
+ * @param mainStr
+ * @param subStr
+ * @returns {Number}
+ */
+function countInstances(mainStr, subStr)
+{
+    var count = 0;
+    var offset = 0;
+    do
+    {
+        offset = mainStr.indexOf(subStr, offset);
+        if(offset != -1)
+        {
+            count++;
+            offset += subStr.length;
+        }
+    }while(offset != -1);
+    return count;
+}
+
+// Judge page input mobile phone number of legitimacy
+function mobileLegitimacy() {
+	$("#pageTextareaId").focusout(function() {
+		$.ajax({
+			type : "POST",
+			url : "/esmsSend/focusout",
+			data : $("#form_previewId").serialize(),
+			success : function(text) {
+				if (text.length == 0) {
+					$("#ValidationMobileMessage").html(text);
+				} else {
+					$("#ValidationMobileMessage").html(text);
+				}
+			},
+			error : function(e) {
+				alert("Error:" + e);
+			}
+		});
+		return false;
+	});
+};
+// -------------------------------------------
+// SMS sending task check icon
+// -------------------------------------------
+function checkIcon(cover, urlVal, dialogId, width, height, title, taskState,formId,url,optionForm) {
+	if (taskState == -1) {
+		$("#" + dialogId).dialog({
+			autoOpen : false,
+			modal : cover,
+			bgiframe:true,
+			width : width,
+			height : height,
+			title : title,
+			close : function() {
+				if(null != formId) {
+					refreshs(formId,url,optionForm);
+				}
+			}
+		});
+		$.ajax({
+			type : "POST",
+			url : urlVal,
+			success : function(text) {
+				$("#" + dialogId).html(text);
+				$("#" + dialogId).dialog("open");
+			},
+			error : function(e) {
+				alert("Error" + e);
+			}
+		});
+		return false;
+	} else {
+		$("#" + dialogId).dialog({
+			autoOpen : false,
+			modal : true,
+			width : 450,
+			height : 120,
+			title : geti18n('prompt')//提示
+		});
+		$("#" + dialogId).html(
+				"<div class='alert alert-error'>"
+						+ geti18n('warn_Waiting')// 警告！  当前任务状态只有<等待审核>的任务才可以审核 
+						+ "</div>");
+		$("#" + dialogId).dialog("open");
+	}
+}
+
+/**
+ * SMS approval/cancel
+ */
+function smsCheckPass(urlVal, formId, divId) {
+	$.ajax({
+		type : "POST",
+		url : urlVal,
+		data : $("#" + formId).serialize(),
+		success : function(text) {
+			$("#" + divId).html(
+					"<label class='alertinput'>" + geti18n(text) + "</label>");
+		},
+		error : function(e) {
+			alert("smsCheckPass:" + e);
+		}
+	});
+	return false;
+}
+
+// -------------------------------------------
+// The task of SMS sending grid icon
+// -------------------------------------------
+function smsSendIcon(urlVal,divID,formId,url,optionForm) {
+	$("#" + divID).dialog({
+		autoOpen : false,
+		modal : true,
+		width : 450,
+		height : 100,
+		title : geti18n('send'),
+		close : function() {
+			if(null != formId) {
+				refreshs(formId,url,optionForm);
+			}
+		}
+	});
+	$("#" + divID).html("<center><h4><img src='../../images/loading.gif' />" + geti18n('please_wait') + "</h4></center>");//正在开始发送请稍后... ...
+	$("#" + divID).dialog("open");
+	$.ajax({
+		type : "post",
+		url : urlVal,
+		async : false,
+		success : function(text) {
+			$("#" + divID).html("<div class='alert alert-error'>" + geti18n(text) + "</div>");
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+	return false;
+}
+// -------------------------------------------
+// The task of SMS suspend grid icon
+// -------------------------------------------
+function smsSuspendIcon(urlVal, divID,formId,url,optionForm) {
+	$("#" + divID).dialog({
+		autoOpen : false,
+		modal : true,
+		width : 450,
+		height : 100,
+		title : geti18n('pause'),
+		close : function() {
+			if(null != formId) {
+				refreshs(formId,url,optionForm);
+			}
+		}
+	});
+	$("#" + divID).html("<center><h4><img src='../../images/loading.gif' />" + geti18n('pause_wait') + "</h4></center>");//正在暂停任务请稍后... ...
+	$("#" + divID).dialog("open");
+	$.ajax({
+		type : "post",
+		url : urlVal,
+		async : false,
+		success : function(text) {
+			$("#" + divID).html("<div class='alert alert-error'>" + geti18n(text) + "</div>");
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+	return false;
+}
+// -------------------------------------------
+// The task of SMS stop grid icon
+// -------------------------------------------
+function smsStopIcon(urlVal, divID,formId,url,optionForm) {
+	$("#" + divID).dialog({
+		autoOpen : false,
+		modal : true,
+		width : 450,
+		height : 100,
+		title : geti18n('stop'),
+		close : function() {
+			if(null != formId) {
+				refreshs(formId,url,optionForm);
+			}
+		}
+	});
+	$("#" + divID).html("<center><h4><img src='../../images/loading.gif' />" + geti18n('stop_wait') + "</h4></center>");//正在停止任务请稍后... ...
+	$("#" + divID).dialog("open");
+	$.ajax({
+		type : "POST",
+		url : urlVal,
+		async : false,
+		success : function(text) {
+			$("#" + divID).html("<div class='alert alert-error'>" + geti18n(text) + "</div>");
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+	return false;
+}
+function submitSearch(urlVal, formId, paraFormId,page,alertPageId,totalPage,id,imgId) {
+	if((isNaN(page) || ("" == page))) {
+		$("#" + alertPageId)
+		.html(
+				"<div class='alert alert-error' id='alertPageId'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + geti18n('manual_output')
+						+ "</strong>" + "</div>");
+	}else if(parseInt(page) > parseInt(totalPage) && parseInt(totalPage) > 0) {
+			$("#" + alertPageId)
+			.html(
+					"<div class='alert alert-error' id='alertPageId'>"
+							+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+							+ "<strong>" + geti18n('manual_max')
+							+ "</strong>" + "</div>");
+	} else {
+		$("#" + id).attr("disabled", true);
+		$("#" + id).unbind("click");
+		$("#" + imgId).show();
+		var exportForm = document.getElementById(formId);
+		if (paraFormId == null) {
+			exportForm.action = urlVal;
+		} else {
+		exportForm.action = urlVal+"?" + $("#" + paraFormId).serialize();
+		}
+		exportForm.submit();
+	}
+	
+	
+	function dynamicTemplate(url,type) {
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : {
+				"type" : type
+			},
+			success : function(text) {
+				$("#templateId").val(text);
+			},
+			error : function(e) {
+				alert("Error:" + e);
+			}
+		});
+		return false;
+	}
+}
+
+function submitSearchTotal(urlVal, formId, paraFormId,page,alertPageId,totalPage) {
+
+	if((isNaN(page) || ("" == page))) {
+		$("#" + alertPageId)
+		.html(
+				"<div class='alert' id='alertPageId'>"
+				+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+				+ "<strong>" + geti18n('manual_output')
+				+ "</strong>" + "</div>");
+	}else if(parseInt(page) > parseInt(totalPage) && parseInt(totalPage) > 0) {
+		$("#" + alertPageId)
+		.html(
+				"<div class='alert' id='alertPageId'>"
+				+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+				+ "<strong>" + geti18n('manual_max')
+				+ "</strong>" + "</div>");
+	} else {
+
+		var exportForm = document.getElementById(formId);
+		if (paraFormId == null) {
+			exportForm.action = urlVal;
+		} else {
+			exportForm.action = urlVal+"?" + $("#" + paraFormId).serialize();
+		}
+		exportForm.submit();
+	}
+}
+
+
+/**
+ * 验证文件扩展名
+ */  
+function checkFileExtendName(fileType){  
+    //根据需求定制  
+    var accept_extend = new Array("csv","txt","xls","xlsx");  
+  
+    var flag = false;  
+  
+    if(fileType != ''){  
+        for(var i=0; i<accept_extend.length; i++){  
+            if(fileType.toLowerCase() == accept_extend[i])  
+                flag = true;  
+        }  
+    }  
+    return flag;  
+}
+
+function exit(formId) {
+	var form = document.getElementById(formId);
+	form.submit();
+}
+
+/**
+ * Prevent duplicate login auditor-grwang
+ * @returns {Boolean}
+ */
+function checkFormLogin() {
+	$.ajax({
+		type : "POST",
+		url : "/repeatLogin",
+		data : "",
+		success : function(text) {
+			if (text == "0") {
+				$("#messageId").html('\u8bf7\u70b9\u51fb\u9000\u51fa\u7cfb\u7edf,\u9000\u51fa\u53e6\u4e00\u4e2a\u6b63\u5728\u4f7f\u7528\u7684\u7528\u6237,\u5728\u8fdb\u884c\u767b\u5f55\uff01');//请点击退出系统,退出另一个正在使用的用户,在进行登录！
+			} else {
+				var form = document.getElementById("loginFormId");
+				form.submit();
+			}
+		},
+		error : function(e) {
+			alert(e);
+		}
+	});
+	return false;
+}
+
+/**
+ * Sending state dynamic effects
+ */
+function acceptTrends() {
+	if ($("#mtStateId").val() == 2) {
+		$("#smsMtReceiveStateId").attr("disabled", false);
+	} else {
+		$("#smsMtReceiveStateId").val("");
+		$("#smsMtReceiveStateId").attr("disabled", true);
+	}
+}
+
+var i18nFlag = true;
+/**
+ * Internationalization
+ */
+function geti18n(key) {
+  if (i18nFlag) {
+    jQuery.i18n.properties({
+      name : 'js_messages',
+      path : '/i18n/',
+      mode : 'map',
+      cache : false,
+      callback : function() {
+      }
+    });
+    i18nFlag = false;
+  }
+  return jQuery.i18n.prop(key);
+}
+
+/**
+ * Internationalization
+ */
+function geti18nPmt(key, parameter1) {
+	var result = '';
+	jQuery.i18n.properties({
+		name : 'js_messages',
+		path : '/i18n/',
+		mode : 'map',
+		cache: false,
+		callback : function() {
+			result = $.i18n.prop(key, parameter1);
+		}
+	});
+	return result;
+}
+
+function deleteIcon(urlVal, divID, content, formId, optionForm) {
+	if (confirm(content)) {		
+		$("#" + divID).dialog({
+			autoOpen : false,
+			modal : true,
+			width : 450,
+			height : 100,
+			title : geti18n('prompt'),
+			close : function() {
+				refresh(formId, optionForm);
+			}
+		});
+		$("#" + divID).dialog("open");
+		
+			$.ajax({
+				type : "post",
+				url : urlVal,
+				async : false,
+				success : function(text) {
+					$("#" + divID).html(text);
+				},
+				error : function(e) {
+					alert("Error:" + e);
+				}
+			});
+	};
+	return false;
+}
+
+function selectCustom(){
+	var exportForm = document.getElementById("form_previewId");
+	exportForm.submit();
+}
+
+function getExpandNumAndSignature() {
+	$.ajax({
+		type : "POST",
+		url : '/esmsSend/expandNumAndSignature',
+		data : {
+			"accountId" : $('#accountSelId').val()
+		},
+		success : function(list) {
+			$("#expandNumId").html(geti18n('expandNumRemind') + list[0]);
+			$("#signatureId").html(geti18n('signatureRemind') + list[1]);
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+}
+
+function entersubmit(formId,url) {
+	var form = document.getElementById(formId);
+	form.action = url;
+	form.submit();
+}
+
+function smsPreviewSendIcon(formId,urlVal,divID,id) {
+	$("#" + id).removeAttr("onclick");
+	$("#" + id).css("cursor","auto");
+	$("#" + divID).dialog({
+		autoOpen : false,
+		modal : true,
+		width : 450,
+		height : 100,
+		title : geti18n('send'),
+		close : function() {
+			remindFile('/esmsSend/msisdnSearch','createFormId');
+		}
+	});
+	$("#" + divID).dialog("open");
+	$("#" + divID).html("<center><h4><img src='../../images/loading.gif' />" + geti18n('please_wait') + "</h4></center>");//正在开始发送请稍后... ...
+	$.ajax({
+		type : "post",
+		data : $("#" + formId).serialize(),
+		url : urlVal,
+		async : false,
+		success : function(text) {
+			$("#" + divID).html("<div class='alert alert-error'>" + geti18n(text) + "</div>");
+		},
+		error : function(e) {
+			alert("Error:" + e);
+		}
+	});
+	return false;
+}
+
+function refreshs(formId,urlVal,paraFormId) {
+	if (null != paraFormId) {
+		$("#" + formId)[0].action = urlVal+"?" + $("#" + paraFormId).serialize();
+	} else {
+		$("#" + formId)[0].action = urlVal;
+	}
+	$("#" + formId)[0].submit();
+	
+}
+
+function allSelect(){
+	$("#" + 'allSelectId').click(function(){
+		if($("#allSelectId").is(":checked")) {
+			$("input[name=contactImport]").prop("checked",true);
+		} else {
+			$("input[name=contactImport]").prop("checked",false);
+		}
+	});
+}
+
+function dynamicStartTime(name1,name2,url) {
+	$('input[name='+name1+']').bind("focusin", function(){
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : {
+				"startTime" : $('input[name='+name1+']').val()
+			},
+			success : function(text) {
+				$('input[name='+name2+']').val(text);
+			}
+		});
+	});
+	$('input[name='+name1+']').bind("keyup", function(){
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : {
+				"startTime" : $('input[name='+name1+']').val()
+			},
+			success : function(text) {
+				$('input[name='+name2+']').val(text);
+			}
+		});
+	});
+}
+function dynamicEndTime(name1,name2) {
+	$('input[name='+name1+']').bind("focusin", function(){
+		$('input[name='+name2+']').val($('input[name='+name1+']').val());
+	});
+	$('input[name='+name1+']').bind("keyup", function(){
+		$('input[name='+name2+']').val($('input[name='+name1+']').val());
+	});
+}
+
+// -----------------------------------
+// 选择联系人发送短信
+var contactdtlList = null;
+function getAllContactdtl() {
+  if (contactdtlList == null) {
+    return $.ajax({
+      type : "POST",
+      async : false,
+      url : '/esmsSend/getAllContactdtl',
+      success : function(data) {
+        contactdtlList = data;
+      },
+      error : function(e) {
+        alert("Error:" + e);
+      }
+    });
+  }
+}
+
+/* append options on left ListBox. */
+function appendContactList(groupId, groupName) {
+  if (contactdtlList == null) {
+    getAllContactdtl();
+  }
+  $.each(contactdtlList, function(i, contact) {
+    if (groupId == contact.contactlistId) {
+      var text = contact.msisdn + " "
+          + ((contact.name) ?  contact.name:"") + " <"
+          + groupName +">";
+      $("#leftListBoxId").append(
+          $("<option/>").val(groupId + "_" + contact.msisdn).text(text));
+    }
+  });
+}
+
+/* remove options on left and right ListBox. */
+function removeContactList(groupId) {
+  $("#leftListBoxId option").each(function() {
+    if ($(this).val().indexOf(groupId + "_") == 0) {
+      $(this).remove();
+    }
+  });
+
+  $("#rightListBoxId option").each(function() {
+    if ($(this).val().indexOf(groupId + "_") == 0) {
+      $(this).remove();
+    }
+  });
+}
+
+function selectContacts() {
+  var selectContacts = "";
+  $("#rightListBoxId option").each(function() {
+    var temp = $(this).val();
+    selectContacts += temp.substr(temp.indexOf("_") + 1) + ",";
+  });
+  $("#selectContacts").val(selectContacts);
+}
+
+//选择联系人发送短信
+//-----------------------------------

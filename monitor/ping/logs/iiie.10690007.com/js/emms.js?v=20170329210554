@@ -1,0 +1,1330 @@
+// 添加帧
+function addMmsFrameByFromId(processId) {
+	addMmsFrame(processId, $("#frameScrollUl li").length);
+	frameScroll('right');
+}
+
+//删除帧
+function delMmsFrameByFromId(processId,postUrl,formId) {
+	delMmsFrame(processId,postUrl,formId);
+}
+
+//添加帧
+function addMmsFrame(processId, divCount) {
+	if (divCount < 19) {
+		var count = divCount + 1;
+		var endId = processId + count;
+		//style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);'
+		//var info = "<input type='radio' id='mms" + endId + "' name='mms"+ formId+ "' value='"+ count + "' onclick=javascript:changeMmsFrame('"+formId+"',true);>"
+		var info = ""
+		+ "<div class='flb'>第<span id='lab" + endId + "'>" + count + "</span>帧</div>"
+		+ "<div id='img" + endId + "' >"
+		+ "<img id='mmsImg" + endId + "' src='../images/noneImg.jpg' style='width:77px;height:80px;' />" 
+		+ "</div>"
+		+ "<div id='mmsVoice"+endId+"' style='display: none;'></div>"
+		+ "<input type='hidden' id='content" + endId + "' name='mmsList[" + divCount + "].txtContent'>"
+		+ "<input type='hidden' id='imgName" + endId + "' name='mmsList[" + divCount + "].imgName'>" 
+		+ "<input type='hidden' id='imgPath" + endId + "' name='mmsList[" + divCount + "].imgPath'>" 
+		+ "<input type='hidden' id='voiceName" + endId + "' name='mmsList[" + divCount + "].voiceName'>"
+		+ "<input type='hidden' id='voicePath" + endId + "' name='mmsList[" + divCount + "].voicePath'>"
+		+ "<input type='hidden' id='durTime" + endId + "' name='mmsList[" + divCount + "].durTime' value='10'>"
+		+ "<input type='hidden' id='imgSize" + endId + "' name='mmsList[" + divCount + "].imgSize'>"
+		+ "<input type='hidden' id='voiceSize" + endId + "' name='mmsList[" + divCount + "].voiceSize'>"
+		+ "<input type='hidden' id='textSize" + endId + "' name='mmsList[" + divCount + "].textSize'>"
+		+ "<input type='hidden' id='path" + endId + "' >";
+		//+ "<span id='text" + endId + "'></span>";
+		var newDiv=$("<li class='iwo' id='mmsFrame" + endId + "' onclick=javascript:changeMmsFrame('"+processId+"',true,this); style='width: 77px; height: 101px;'></li>").html(info);
+		$("#frameScrollUl").append(newDiv);
+		//$("#mms" + endId).attr("checked", "true");
+		$("#currFrame" + processId).html(count);
+		$("#durTime" + processId).attr("value", "10");
+		changeMmsFrame(processId, false,newDiv);//改变帧时执行的动作
+		$("#totalFrame" + processId).html(count);
+		$("#curFrameId" + processId).val(count);
+		$("#lab"+processId).html(count);
+		$("#mmsVoice"+processId).empty();//清空当前DIV
+		$("#mmsImg"+processId).attr('style','width: 134px; height: 120px; display:');
+		cleanImgFilePath();//清空图片上传文件路径
+		cleanVoiceFilePath();//清空声音上传文件路径
+		//var ff = new SellerScroll();
+	} else {
+		alert("彩信模板最大为19帧");
+	}
+}
+
+//删除帧
+function delMmsFrame(processId,postUrl,formId) {
+	var checked = $("#curFrameId" + processId).val();
+	if (checked > 0) {
+		var child = $("#mmsFrame" + processId + checked);
+		//var mmsRadio = $("#mmsFrame" + processId).children('div');
+		var mmsRadio = $("#frameScrollUl li");
+		if (mmsRadio.length > 1) {
+			child.remove();
+			for ( var i = (parseInt(checked)+1); i < mmsRadio.length + 1; i++) {
+				var num = i-1 ;
+				var idSuffix = processId + i;
+				var attrSuffix = processId + num;
+				$("#mmsFrame" + idSuffix).attr("id","mmsFrame" + attrSuffix);
+				$("#img" + idSuffix).attr("id","img" + attrSuffix);
+				$("#mmsVoice" + idSuffix).attr("id","mmsVoice" + attrSuffix);
+				$("#mms" + idSuffix).attr("value", num);
+				$("#mms" + idSuffix).attr("id","mms" + attrSuffix);
+				$("#lab" + idSuffix).html(num);
+				$("#lab" + idSuffix).attr("id","lab" + attrSuffix);
+				$("#mmsImg" + idSuffix).attr("id","mmsImg" + attrSuffix);
+				$("#text" + idSuffix).attr("id","text" + attrSuffix);
+				$("#imgName" + idSuffix).attr("id","imgName" + attrSuffix);
+				$("#imgName" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].imgName");
+				$("#imgPath" + idSuffix).attr("id","imgPath" + attrSuffix);
+				$("#imgPath" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].imgPath");
+				$("#voiceName" + idSuffix).attr("id","voiceName" + attrSuffix);
+				$("#voiceName" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].voiceName");
+				$("#voicePath" + idSuffix).attr("id","voicePath" + attrSuffix);
+				$("#voicePath" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].voicePath");
+				$("#content" + idSuffix).attr("id","content" + attrSuffix);
+				$("#content" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].txtContent");
+				$("#durTime" + idSuffix).attr("id","durTime" + attrSuffix);
+				$("#durTime" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].durTime");
+				$("#imgSize" + idSuffix).attr("id","imgSize" + attrSuffix);
+				$("#imgSize" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].imgSize");
+				$("#voiceSize" + idSuffix).attr("id","voiceSize" + attrSuffix);
+				$("#voiceSize" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].voiceSize");
+				$("#textSize" + idSuffix).attr("id","textSize" + attrSuffix);
+				$("#textSize" + attrSuffix).attr("name", "mmsList[" + (i - 2) + "].textSize");
+				$("#path" + idSuffix).attr("id","path" + attrSuffix);
+			}
+			//删除当前帧后,选择的焦点移动下一帧
+			//mmsRadio = $("#mmsFrame" + processId).children('div');
+			mmsRadio = $("#frameScrollUl li");
+			if(checked > mmsRadio.length){
+				checked = mmsRadio.length;
+			}
+			$("#curFrameId" + processId).val(checked);
+			var curDiv = $("#mmsFrame"+processId+checked);
+			changeMmsFrame(processId, true, curDiv);//// 改变帧时，执行的动作
+			//mmsRadio.length = mmsRadio.length - 1;
+			cleanImgFilePath();//清空图片上传文件路径
+			cleanVoiceFilePath();//清空声音上传文件路径
+			findMmsSize(processId);//彩信模板总大小
+		}else {
+			$("#currFrame" + processId).html(1);
+			alert("只有一帧的情况下，不能再删除此帧");
+		}
+		$("#totalFrame" + processId).html(mmsRadio.length);
+		//删除是操作滚动
+		var total = 7;//每页帧总数量
+		var lenght = $("#frameScrollInner").find("li").length;
+		if (lenght < total) {// 少于7帧不滚动
+			return;
+		}
+		var pageCount = Math.ceil(lenght / total);
+
+		var page = $("#curScrollPage").val();//当前第页数
+		if(page > pageCount){
+			frameScroll("left");
+		}
+//  删除帧中的ajax请求		
+//		$.ajax({
+//			type : "POST",
+//			url : urlVal,
+//			success : function(text) {
+//				$("#mmsSize"+processId).html(parseFloat(response).toFixed(2));
+//			},
+//			error : function(e) {
+//				alert("Error:" + e);
+//			}
+//		});
+//		return false;
+	}
+}
+
+//获得当前图片的宽高
+function getImageSize(oImage, formId) {
+	var currImg = new Image();
+	if (currImg.src != oImage.src) {
+		currImg.src = oImage.src;
+	}
+	$("#imgWidth" + formId).html(currImg.width);
+	$("#imgHeight" + formId).html(currImg.height);
+}
+
+//去除img的onload事件
+function imgUnload(img){
+	//在ie6下img标签的src属性为动态gif的时候（即多帧gif）会触发这个bug
+	//解决这个bug,将该img的onload事件置为空值.
+	img.onload=null;
+}
+
+//改变帧时，执行的动作
+function changeMmsFrame(processId, flag, curDiv) {
+	//获取当前帧的索引值
+	var checked = $("#frameScrollInner ul li").index(curDiv) + 1;
+	//被选中样式
+	$(curDiv).attr("style","border-color:#426ab3;border-style:solid;border-width:2px;width: 77px; height: 101px;").siblings().attr("style","width: 77px; height: 104px;");
+	//$(curDiv).addClass('iws').siblings().addClass('iwo');
+	//$(curDiv).attr('class','iws').siblings().attr('class','iwo');
+	//显示区域图片
+	$("#mmsVoice"+processId).empty();//清空当前DIV
+	$("#mmsImg"+processId).attr('style','width: 134px; height: 120px; display:');
+	var image = $("#mmsImg" + processId + checked);
+	var imgSrc = image.attr("src");
+    $("#lab"+processId).html(checked);
+	$("#mmsImg" + processId).attr("src", imgSrc);
+	//文字
+	$("#currFrame" + processId).html(checked);
+	$("#curFrameId"+processId).attr("value",checked);
+	var content = $("#content" + processId + checked).val();
+	changCotentCount(content, processId);
+	$("#textContent" + processId).val(content);
+	//帧播放时间
+	var durTimes = $("#durTime" + processId + checked).val();
+	$("#durTime" + processId).val(durTimes);
+	//图片类型
+	var imgName = $("#imgName" + processId + checked).val();
+	if (imgName && imgName.indexOf("noneImg") < 0) {
+		var type = imgName.substring(imgName.lastIndexOf(".") + 1);
+		$("#imgType" + processId).html(type);
+	} else {
+		$("#imgType" + processId).html("无");
+	}
+	//音、视频
+	var voiceName = $("#voiceName" + processId + checked).val();
+	var type = voiceName.substring(voiceName.lastIndexOf(".") + 1);
+	if (type) {
+		$("#voiceType" + processId).html(type);
+		//视频
+		var src = "/emmsTemplate/formatStream?mmsId="+$("#mmsTemplateId").val()+"&fileName="+voiceName;
+		if (voiceName.match(/.3gp|.mp4/i)) {
+			//==== 主显示区域 ====
+			$("#mmsVoice"+processId).append(getVoiceObject(src, '180', '160', true, true));
+			$("#mmsImg"+processId).attr('style','display:none');//隐藏图片显示区域
+			$("#mmsVoice"+processId).attr('style','display:');
+//			//==== 帧显示区域 ====
+//			$("#mmsVoice"+processId + checked).append(getVoiceObject(src, '77', '80', false, false));
+//			$("#img"+processId + checked).attr('style','display:none');
+//			$("#mmsVoice"+processId + checked).attr('style','display:');
+		}else if(voiceName.match(/.mp3|.mid|.amr/i)){//声音
+			//==== 主显示区域 ====
+			$("#mmsImg"+processId).attr('style','width: 134px; height: 120px; display:');
+			$("#mmsVoice"+processId).append(getVoiceObject(src, '180', '20', true, true));
+			$("#mmsVoice"+processId).attr('style','display:');
+//			//==== 帧显示区域 ====
+//			$("#img" + processId + checked).attr('style','width: 77px; height: 60px; display:');
+//			$("#mmsVoice" + processId + checked).append(getVoiceObject(src, '77', '20', true, false));
+//			$("#mmsVoice" + processId + checked).attr('style','display:');
+		}
+	} else {
+		$("#voiceType" + processId).html("无");
+	}
+	cleanImgFilePath();//清空图片上传文件路径
+	cleanVoiceFilePath();//清空声音上传文件路径
+}
+
+//清空图片上传文件路径
+function cleanImgFilePath(){
+	var imageFile =document.getElementById("mmsFile");
+	if(imageFile){
+		imageFile.outerHTML = imageFile.outerHTML;
+	}
+}
+
+//清空声音上传文件路径
+function cleanVoiceFilePath() {
+	var voiceFile = document.getElementById("voiceFile");
+	if (voiceFile) {
+		voiceFile.outerHTML = voiceFile.outerHTML;
+	}
+}
+
+//清空上传文件标签的路径
+function cleanUploadFilePath(fileId) {
+	var uploadFile = document.getElementById(fileId);
+	if (uploadFile) {
+		uploadFile.outerHTML = uploadFile.outerHTML;
+	}
+}
+//更新文字字数
+function changCotentCount(currText, processId) {
+//	var maxLength = 1000;
+	var textLabel = $("#contentCount" + processId);
+	var text = "";
+	if (currText.length > 0) {
+		text = currText.replace(/^\n+|\n+$/g, "");
+	}
+	// if(currText.length > maxLength){
+	// textLabel.css("color","red");
+	// currText = currText.substring(0,maxLength);
+	// text = currText.replace(/^\n+|\n+$/g, "");
+	// $("#textContent"+processId).val(currText);
+	// }else{
+	// textLabel.css("color","");
+	// }
+	textLabel.html(text.length);
+	getTextSize(currText, processId);
+	findMmsSize(processId);
+}
+//获取文字内容大小
+function getTextSize(currText, processId) {
+	var checked = $("#curFrameId" + processId).val();
+	if (currText.length > 0) {
+		//检测字符串长度，汉字(GBK)两个字节,UTF-8三个字节，英文和数字一个字节。注：大部分彩信通道为UTF-8，所以用"---"表示3字节
+		//\x00-\xff 表示的是ASCII 编码范围，0～255
+		var textSize = (currText.replace(/[^\x00-\xff]/gi, "---").length / 1024) + "";
+		var text = parseFloat(textSize).toFixed(2);
+		if (checked) {
+			$("#textSize" + processId + checked).val(text);
+		}
+	} else {
+		if (checked) {
+			$("#textSize" + processId + checked).val(0);
+		}
+	}
+}
+
+//改变图片上文字内容
+function initFramTxt(processId, txtContent) {
+	var checked = $("#curFrameId" + processId).val();//获取当前选中帧的下标
+	$("#content" + processId + checked).val(txtContent);
+//	$("#text" + processId + checked).html(findText(txtContent, 5));
+//	$("#contentText" + processId).html(findText(txtContent, 10));
+}
+
+
+//重置当前帧上传的图片、音视频参数
+function resetUploadFile(processId, fileType) {
+	//console.debug("formId= " + processId);
+	var checked = $("#curFrameId" + processId).val();
+	if (checked == undefined) {
+		return;
+	}
+	if (fileType == "img") {
+		$("#mmsImg" + processId).attr("src","../images/noneImg.jpg");
+		$("#mmsImg" + processId + checked).attr("src","../images/noneImg.jpg");
+		$("#imgName" + processId + checked).val("");//修改图片名称为空
+		$("#imgPath" + processId + checked).val("");//修改图片路径为空
+		$("#imgSize" + processId + checked).val(0);// 修正彩信(图片)大小
+		$("#imgType" + processId).html("无");// 修正图片格式
+		cleanImgFilePath();//清空图片上传文件路径
+	} else {
+		$("#voiceName" + processId + checked).val("");//修正帧管理区域音、视频文件名
+		$("#voicePath" + processId + checked).val("");//修正帧管理区域音、视频文件名
+		$("#voiceSize" + processId + checked).val(0);// 修正帧管理区域音、视频大小
+		$("#voiceType" + processId).html("无");// 修正音、视频格式
+		$("#voiceSize" + processId).html(0);//修正显示区域彩信(音、视频)大小
+		cleanVoiceFilePath();//清空声音上传文件路径
+		//==== 主显示区域 ====
+		$("#mmsVoice"+processId).empty();//清空当前DIV
+		$("#mmsImg"+processId).attr('style','width: 134px; height: 120px; display:');
+		//==== 帧显示区域 ====
+		$("#mmsVoice"+processId + checked).empty();//清空当前DIV
+		$("#img"+processId + checked).attr('style','width: 77px; height: 80px; display:');
+	}
+	findMmsSize(processId);// 修正彩信大小
+}
+//更新帧播放时间和验证
+function changeDurTime(durTime, processId) {
+	if (durTime == null || durTime == "" || isNaN(durTime) || (durTime > 60 || durTime < 1)) {
+		alert("帧的播放时间为 1 到60 之间数字");
+		$("#durTime" + processId).val(10);
+		return false;
+	}
+	var checked = $("#curFrameId" + processId).val();
+	$("#durTime" + processId + checked).val(durTime);
+}
+
+
+function changeValueById(id,value){
+	$("#"+id).val(value);
+}
+
+/**
+ * 图片上传
+ * @param img 上传文件对象
+ * @param url 调用的URL
+ * @param processId 处理标识ID
+ * @returns {Boolean}
+ */
+function uploadImage(img, uploadUrl, processId) {
+	var imgPath = img.value;
+	// 检查图片格式
+	if (!/\.(gif|jpg|jpeg|JPG|GIF|JPEG)$/.test(imgPath)) {
+		alert("图片格式必须是jpg(jpeg)或gif");
+		return false;
+	};
+	var index = $("#curFrameId" + processId).val();
+	var voicePath = $("#voicePath" + processId + index).val();
+	// 判断是否是图片文件
+	if (voicePath && voicePath.indexOf("noneImg") < 0) {
+		if (voicePath.match(/.3gp|.mp4/i) && imgPath.match(/.jpg|.gif/i)) {
+			alert("图片文件和视频文件不可以上传到同一帧内!");
+			return false;
+		}
+	}
+	
+	// ajaxFileUpload上传图片
+	var data = "fileName=" + getFileName(processId) + "&mmsId=" + $("#mmsTemplateId").val();
+	ajaxFileUpload(uploadUrl+"?"+data, false, img.id, "", "json", function(result) {
+			//var json = (new Function("return " + data))();// eval('(' + data + ')');
+			var fileName = result.imgName;
+			//图片预览区显示上传的图片
+			var checked = $("#curFrameId"+processId).val();
+			//上传图片文件的大小
+			$("#imgSize"+ processId + checked).val(result.imgSize);
+			//上传图片的格式显示 
+			var type = fileName.substring(fileName.lastIndexOf(".") + 1);
+			$("#imgType" + processId).html(type);
+			//获取6位长的随机数,加在url后面，解决因缓存问题不显示新上传的图片
+			var imgSrc = "/emmsTemplate/formatStream?fileName=" + fileName + "&mmsId=" + $("#mmsTemplateId").val() + "&" + getRandNumber(6);
+			$("#mmsImg" + processId).attr("src",imgSrc);
+			//帧管理区显示上传的图片
+			$("#mmsImg" + processId + checked).attr("src",imgSrc);
+			$("#imgName"+ processId + checked).val(fileName);
+			$("#imgPath"+ processId + checked).val(fileName);
+			//彩信模板总大小显示
+			var mmsSize = findMmsSize(processId);
+			//判断彩信总大小是否超过86KB
+			if(mmsSize > 86){
+				alert("彩信大小超过了86KB！");
+				//超过86KB，重置当前帧的图片参数
+				resetUploadFile(processId,'img');
+				//ajaxPost('emmsSend/mmsTemplate/mms-template!deleteFile.action?fileType='+fileType,targetDiv,formId,processId);
+			}
+	});
+}
+
+/**
+ * 上传声音、视频文件
+ * @param voice 上传文件对象
+ * @param uploadUrl 调用的URL
+ * @param processId 处理标识ID
+ * @returns {Boolean}
+ */
+function uploadVoice(voice, uploadUrl, processId) {
+	var voicePath = voice.value;
+	// 3gp,mp4,mp3,mid
+	if (!voicePath.match(/.3gp|.mp4|.mp3|.mid|.amr/i)) {
+		alert('音频或视频格式无效！音频请上传mp3、mid或amr格式文件，视频请上传3gp或mp4格式文件。');
+		return false;
+	}
+	var index = $("#curFrameId" + processId).val();
+	var imgPath = $("#imgName" + processId + index).val();
+	// 判断是否是图片文件
+	if (imgPath && imgPath.indexOf("noneImg") < 0) {
+		if (voicePath.match(/.3gp|.mp4/i) && imgPath.match(/.jpg|.gif/i)) {
+			alert("图片文件和视频文件不可以上传到同一帧内!");
+			return false;
+		}
+	}
+	// ajaxFileUpload上传声音、视频文件
+	var data = "fileName=" + getFileName(processId) + "&mmsId=" + $("#mmsTemplateId").val();
+	ajaxFileUpload(uploadUrl+"?"+data, false, voice.id, "" ,"json", 
+	    function(result) {
+			//var json = (new Function("return " + data))();// eval('(' + data + ')');
+			var fileName = result.imgName;
+			var checked = $("#curFrameId" + processId).val();
+			//上传音、视频文件的大小
+			$("#voiceSize"+ processId).val(result.imgSize);
+			$("#voiceSize"+ processId + checked).val(result.imgSize);
+			//上传音、视频文件的格式显示 
+			var type = fileName.substring(fileName.lastIndexOf(".") + 1);
+			$("#voiceType" + processId).html(type);
+			//帧管理区音、视频文件名设置
+			$("#voiceName"+ processId + checked).val(fileName);
+			$("#voicePath"+ processId + checked).val(fileName);
+			//彩信模板总大小显示
+			var mmsSize = findMmsSize(processId);
+			//判断彩信总大小是否超过86KB
+			if(mmsSize > 86){
+				alert("彩信大小超过了86KB！");
+				//超过86KB，重置当前帧的音、视频参数
+				resetUploadFile(processId,'voice');
+			}else{
+				var src = "/emmsTemplate/formatStream?mmsId="+$("#mmsTemplateId").val()+"&fileName="+fileName;
+				$("#mmsVoice"+processId).empty();//清空当前DIV
+				if (voicePath.match(/.3gp|.mp4/i)) {//视频
+					//==== 主显示区域 ====
+					$("#mmsVoice"+processId).append(getVoiceObject(src, '180', '160', true, true));
+					$("#mmsImg"+processId).attr('style','display:none');//隐藏图片显示区域
+					$("#mmsVoice"+processId).attr('style','display:');
+					//==== 帧显示区域 ====
+					$("#mmsVoice"+processId + checked).append("<img src='/images/vplay.gif' style='width:77px; height:52px;'/>");
+					$("#img"+processId + checked).attr('style','display:none');
+					$("#mmsVoice"+processId + checked).attr('style','display:');
+				}else if(voicePath.match(/.mp3|.mid|.amr/i)){//声音
+					//==== 主显示区域 ====
+					$("#mmsImg"+processId).attr('style','width: 134px; height: 120px; display:');
+					$("#mmsVoice"+processId).append(getVoiceObject(src, '180', '20', true, true));
+					$("#mmsVoice"+processId).attr('style','display:');
+					//==== 帧显示区域 ====
+					$("#img"+processId + checked).attr('style','width: 77px; height: 60px; display:');
+					$("#mmsVoice"+processId + checked).append("<img src='/images/vplay.gif' style='width:77px; height:20px;'/>");
+					$("#mmsVoice"+processId + checked).attr('style','display:');
+				}
+			}
+	});
+}
+
+function uploadMmsZip(file, uploadUrl, divId) {
+	// ajaxFileUpload上传文件
+	$.ajaxFileUpload({
+		url : uploadUrl,//调用的上传的URL
+		secureuri : false,
+		fileElementId : file.id,//上传文件标签的ID
+		dataType : "json",
+//		beforeSend:function()
+//		{
+//			$("#loading").show();
+//		},
+//		complete:function()
+//		{
+//			$("#loading").hide();
+//		},				
+		success : function(data, status) {
+            $("#"+divId).html(data.uploadMessage);
+            alert(data.uploadFile);
+            $("#uploadFile").val(data.uploadFile);
+            
+		},
+		error : function(data, status, e) {
+//			alert(e);
+			//alert("文件上传失败,请重新选择文件");
+		}
+	});
+	cleanUploadFilePath("uploadFile");
+	return false;
+}
+
+function ajaxFileUpload(url, secureuri, fileElementId, data, dataType, callback, error) {
+	$.ajaxFileUpload({
+		url : url,//调用的上传的URL
+		secureuri : secureuri,
+		fileElementId : fileElementId,//上传文件标签的ID
+		data: data,
+		dataType : dataType,
+		success : function(result) {
+	        if(typeof callback != 'undefined' && callback instanceof Function){
+			  callback(result);
+		    }
+		},
+		error : function(e) {
+			if(typeof error != 'undefined' && error instanceof Function){
+					error(e);
+			}else{
+					//alert("Error" + e);
+			}
+		}
+	});	
+}
+
+//统计模板的大小
+function findMmsSize(processId) {
+	var mmsSize = 0.00;
+	//获取帧总数量
+	//var frameTotal = $("#mmsFrame"+processId).children("div").length;
+	var frameTotal = $("#frameScrollUl li").length;
+	for (var i = 1; i <= frameTotal; i++) {
+		var formChecked = processId + i;
+		//文字内容大小
+		var textSize = $("#textSize" + formChecked).val();
+		if (textSize.length <= 0) {
+			textSize = 0.00;
+		}
+		mmsSize = parseFloat(mmsSize) + parseFloat(textSize);
+		//图片文件大小
+		var imgSize = $("#imgSize" + formChecked).val();
+		if (imgSize.length <= 0) {
+			imgSize = 0.00;
+		}
+		mmsSize = parseFloat(mmsSize) + parseFloat(imgSize);
+		//声音、视频文件大小
+		var voiceSize = $("#voiceSize" + formChecked).val();
+		if (voiceSize.length <= 0) {
+			voiceSize = 0.00;
+		}
+		mmsSize = parseFloat(mmsSize) + parseFloat(voiceSize);
+	}
+	
+	var size = 0;
+	if (mmsSize > 0) {
+		size = mmsSize.toFixed(2);
+	}
+	//$("#mmsFileSize" + processId).val(size);
+	if (size > 86) {
+		$("#mmsSize" + processId).html("<font size='2' color='red'>" + size + "</font>");
+	} else {
+		$("#mmsSize" + processId).html(size);
+	}
+	//alert("mmsSize: "+size);
+	return parseFloat(size);
+}
+
+/**
+ * 获取"length"长度的随机数
+ * @param length
+ * @returns {String}
+ */
+function getRandNumber(length){
+	var result = "";
+	for ( var i = 0; i < length; i++) {
+		result = result + (parseInt(Math.random() * 9)).toString();
+	}
+	return result;
+}
+
+/**
+ * 根据当前所选择的第几帧产生文件名,当前第3帧_4位随机数,如：003_1314
+ * @param processId
+ * @returns {String}
+ */
+function getFileName(processId) {
+	var preFixAry = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20");
+	//获取当前被选择帧的下标
+	var selected = $("#curFrameId" + processId).val();
+	var prefix = preFixAry[selected - 1];
+	if (!prefix) {
+		prefix = preFixAry[0];
+	}
+	var fileName = prefix + "_" + getRandNumber(4);
+	return fileName;
+}
+
+/** 手动控制帧左右移动 */
+function frameScroll(direction) {
+	var page = $("#curScrollPage").val();//当前第页数
+	var total = 7;//每页帧总数量
+	var scrollInner = $("#frameScrollInner");
+	var lenght = scrollInner.find("li").length;
+	if (lenght < total) {// 少于7帧不滚动
+		return;
+	}
+	var speed = 500;//slow
+	var width = $("#frameScroll").width();
+	var len = scrollInner.find("li").length;
+	var pageCount = Math.ceil(len / total); // 向上取舍，计算总页数
+	if (direction == 'left') {		
+		if (!scrollInner.is(":animated")) { // 判断显示区域是否正在处于动画
+			if (page == 1) { // 当前为第一个版面时,如果再向左，则跳转到最后一个版面。
+//				scrollInner.animate({left : '-=' + width * (pageCount - 1)},speed);
+//				page = pageCount;
+			} else {
+				scrollInner.animate({left : '+=' + width}, speed);
+				page--;
+			}
+		}
+		$("#curScrollPage").val(page);
+	} else {		
+		if (!scrollInner.is(":animated")) { // 判断显示区域是否正在处于动画
+			if (page == pageCount) { // 当前为最后一个版面时,如果再向右，则跳转到第一个版面。
+//				scrollInner.animate({left : '0px'}, speed); // 通过改变left值，跳转到第一个版面
+//				page = 1;
+			} else {
+				scrollInner.animate({left : '-=' + width}, speed); // 通过改变left值，达到每次换一个版面
+				page++;
+			}
+		}
+		$("#curScrollPage").val(page);
+	}
+}
+
+//上传和手动模式切换
+function changeManualUpload(value, uploadId, manualId) {
+	// var value = $('input[name=mmsType]:checked').val();
+	if (value == "U") {
+//		$("#" + uploadId).attr("style", "display:''");
+//		$("#" + manualId).attr("style", "display:none");
+		$("#" + uploadId).show();
+		$("#" + manualId).hide();
+	} else if (value == "M") {
+//		$("#" + uploadId).attr("style", "display:none");
+//		$("#" + manualId).attr("style", "display:''");
+		$("#" + uploadId).hide();
+		$("#" + manualId).show();
+	}
+}
+
+
+
+//音视频播放显示
+function showViedo(href, processId) {
+	//获取当前被选择帧的下标
+	var checked = $("#curFrameId" + processId).val();
+	var name = $("#voiceName" + processId + checked).val();
+	var mmsId = $("#mmsTemplateId").val();
+	var url = href + "?mmsId=" + mmsId + "&voiceName=" + name;
+	window.open(url,'预览','left='+ (window.screenLeft + 300)+ ', top='+ (window.screenTop + 40)+ ', width=350, height=256, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+}
+
+function openVoice(url) {
+	window.open(url,'预览','left='+ (window.screenLeft + 300)+ ', top='+ (window.screenTop + 40)+ ', width=350, height=256, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+
+}
+
+
+//编辑模板，初始化帧信息
+function initEditMmsFrame(index, processId) {
+	if (index == 1) {
+		//选中样式
+		$("#mmsFrame" + processId + index).attr("style","border-color:#426ab3;border-style:solid;border-width:2px;width: 77px; height: 101px;");
+		//第1帧显示
+		$("#lab" + processId).html(index);
+		//图片显示
+		var imgSrc = $("#mmsImg" + processId + index).attr("src");
+		$("#mmsImg" + processId).attr("src", imgSrc);
+		//图片格式
+//		var imgType = imgSrc.substring(imgSrc.lastIndexOf(".") + 1);
+//		$("#imgType" + processId).html(imgType);
+		var imgName = $("#imgName" + processId + index).val();
+		if (imgName && imgName.indexOf("noneImg") < 0) {
+			var type = imgName.substring(imgName.lastIndexOf(".") + 1);
+			$("#imgType" + processId).html(type);
+		} else {
+			$("#imgType" + processId).html("无");
+		}
+		
+		//文字部分
+		var content = $("#content" + processId + index).val();
+		$("#textContent" + processId).val(content);
+		changCotentCount(content, processId);
+		
+		//帧播放时间
+		$("#durTime" + processId).val($("#durTime" + processId + index).val());
+		//音、视频部分
+		//$("#voiceSize" + processId).html($("#voiceSize" + processId + index).val());
+		var voiceName = $("#voiceName" + processId + index).val();
+		if (voiceName && voiceName.indexOf("noneImg") < 0) {
+			var type = voiceName.substring(voiceName.lastIndexOf(".") + 1);
+			$("#voiceType" + processId).html(type);
+			//视频
+			var src = "/emmsTemplate/formatStream?mmsId="+$("#mmsTemplateId").val()+"&fileName="+voiceName;
+			if (voiceName.match(/.3gp|.mp4/i)) {
+				$("#mmsVoice"+processId).append(getVoiceObject(src, '180', '160', true, true));
+				$("#mmsImg"+processId).attr('style','display:none');//隐藏图片显示区域
+				$("#mmsVoice"+processId).attr('style','display:');
+			}else if(voiceName.match(/.mp3|.mid|.amr/i)){//声音
+				$("#mmsImg"+processId).attr('style','width: 134px; height: 120px; display:');
+				$("#mmsVoice"+processId).append(getVoiceObject(src, '180', '20', true, true));
+				$("#mmsVoice"+processId).attr('style','display:');
+			}
+		} else {
+			$("#voiceType" + processId).html("无");
+		}
+	}
+	//$("#text" + processId + index).html(findText(txtContent, 5));
+	$("#currFrame" + processId).html(1);
+	var mmsRadio = $("#frameScrollUl li");
+	$("#totalFrame" + processId).html(mmsRadio.length);
+	//==== 声音 视频 帧显示区域 ====
+	var voiceName = $("#voiceName" + processId + index).val();
+	if (voiceName && voiceName.indexOf("noneImg") < 0) {
+		//视频
+		//var src = "/emmsTemplate/formatStream?mmsId="+$("#mmsTemplateId").val()+"&fileName="+voiceName;
+		if (voiceName.match(/.3gp|.mp4/i)) {
+			//==== 帧显示区域 ====
+			$("#mmsVoice"+processId + index).append("<img src='/images/vplay.gif' style='width:77px; height:52px;'/>");
+			$("#img"+processId + index).attr('style','display:none');
+			$("#mmsVoice"+processId + index).attr('style','display:');
+		}else if(voiceName.match(/.mp3|.mid|.amr/i)){//声音
+			//==== 帧显示区域 ====
+			$("#img"+processId + index).attr('style','width: 77px; height: 60px; display:');
+			$("#mmsVoice"+processId + index).append("<img src='/images/vplay.gif' style='width:77px; height:20px;'/>");
+			$("#mmsVoice"+processId + index).attr('style','display:');
+		}
+	}
+	if(index == mmsRadio.length){
+		//获取彩信总大小
+		findMmsSize(processId);
+	}
+}
+
+
+//mms preview js
+function previewDisplay(type,index){
+	var imgStyle = "display:none";
+	var textStyle = "display:none";
+	var voiceStyle = "display:none";
+	var videoStyle = "display:none";
+	$("#voiceDisplay").empty();//清空当前声音DIV
+	$("#videoDisplay").empty();//清空当前视频DIV
+	if(type == 1 || type == 2 || type == 4 || type == 6){
+		//显示图片
+		/* 1、 图片  + 文字 + 声音*//* 2、 图片  + 文字*//* 4、 图片  + 声音*//* 6、 图片*/
+		imgStyle = "width: 240px; height: 160px; padding: 2px; border: 2px solid #dfdfdf;";
+	}
+	//显示文字
+	if(type == 1 ){
+		/* 1、 图片  + 文字 + 声音*/ 
+		textStyle = "width: 562px; height: 98px;";
+	}else if(type == 2){ /* 2、 图片  + 文字*/
+		textStyle = "width: 562px; height: 125px;";
+	}else if( type == 3 ){ /* 3、视频  + 文字*/
+		textStyle = "width: 562px; height: 98px;";
+	}else if( type == 5 ){ /* 5、 文字  + 声音*/
+		textStyle = "width: 562px; height: 250px;";
+	}else if(type == 7){ /* 7、 文字*/
+		textStyle = "width: 562px; height: 261px;";
+	}
+	if(type == 3 || type == 8){
+		//显示视频
+		/* 3、视频  + 文字; 8、 视频*/
+		videoStyle = "display: ";
+		 var src = jQuery("#viewVoice"+index).val();
+		$("#videoDisplay").append(getVoiceObject(src, '180', '160', true, true));
+	}
+	if(type == 1 || type == 4 || type == 5 || type == 9){
+		//显示声音
+		/* 1、 图片  + 文字 + 声音; 4、 图片  + 声音; 5、 文字  + 声音; 9、 声音*/
+		voiceStyle = "display: ";
+		 var src = jQuery("#viewVoice"+index).val();
+		$("#voiceDisplay").append(getVoiceObject(src, '180', '20', true, true));
+	}
+	jQuery("#voiceDisplay").attr("style",voiceStyle);
+	jQuery("#imgDisplay").attr("style",imgStyle);
+	jQuery("#videoDisplay").attr("style",videoStyle);
+	jQuery("#textDisplay").attr("style",textStyle);
+	//图片显示
+	var viewImgSrc = jQuery("#viewImg"+index).val();
+	jQuery("#imgDisplay").attr("src",viewImgSrc);
+	//文字显示
+	var viewTextValue = jQuery("#viewText"+index).val();
+  jQuery("#textDisplay").val(viewTextValue);
+//  //视频,声音
+//  var viewVoiceValeue = jQuery("#viewVoice"+index).val();
+//  jQuery("#voiceDisplay").attr("onclick","openVoice('"+viewVoiceValeue+"')");
+  jQuery("li").removeClass('preview-Select');
+  jQuery("#frame"+index).addClass('preview-Select');
+}
+
+//init preview
+function initPreview(type, index) {
+	if (index == 1) {
+		var imgStyle = "display: none";
+		var videoStyle = "display: none";
+		var textStyle = "display: none";
+		var voiceStyle = "display: none";
+		if(type == 1 || type == 2 || type == 4 || type == 6){
+			//显示图片
+			/* 1、 图片  + 文字 + 声音*//* 2、 图片  + 文字*//* 4、 图片  + 声音*//* 6、 图片*/
+			imgStyle = "width: 240px; height: 160px;padding:2px; border: 2px solid #dfdfdf;";
+		}
+		if(type == 1 ){/* 1、 图片  + 文字 + 声音*/ 
+			textStyle = "width: 562px; height: 98px;";//1
+		}else if(type == 2){ /* 2、 图片  + 文字*/
+			textStyle = "width: 562px; height: 125px;";//2
+		}else if( type == 3 ){ /* 3、视频  + 文字*/
+			textStyle = "width: 562px; height: 98px;";//3 5
+		}else if( type == 5 ){ /* 5、 文字  + 声音*/
+			textStyle = "width: 562px; height: 250px;";//3 5
+		}else if(type == 7){ /* 7、 文字*/
+			textStyle = "width: 562px; height: 261px;";//1
+		}
+		if(type == 3 || type == 8){
+			//显示视频
+			/* 3、视频  + 文字; 8、 视频*/
+			videoStyle = "display: ";
+			 var src = jQuery("#viewVoice"+index).val();
+			$("#videoDisplay").append(getVoiceObject(src, '180', '160', true, true));
+		}
+		if(type == 1 || type == 4 || type == 5 || type == 9){
+			//显示声音
+			/* 1、 图片  + 文字 + 声音; 4、 图片  + 声音; 5、 文字  + 声音; 9、 声音*/
+			voiceStyle = "display: ";
+			 var src = jQuery("#viewVoice"+index).val();
+			$("#voiceDisplay").append(getVoiceObject(src, '180', '20', true, true));
+		}
+		jQuery("#voiceDisplay").attr("style", voiceStyle);
+		jQuery("#videoDisplay").attr("style", videoStyle);
+		jQuery("#imgDisplay").attr("style", imgStyle);
+		jQuery("#textDisplay").attr("style", textStyle);
+		//图片显示
+		var viewImgSrc = jQuery("#viewImg"+index).val();
+		jQuery("#imgDisplay").attr("src",viewImgSrc);
+		//文字显示
+		var viewTextValue = jQuery("#viewText"+index).val();
+	    jQuery("#textDisplay").val(viewTextValue);
+	    //视频,声音
+	    var viewVoiceValeue = jQuery("#viewVoice"+index).val();
+	    jQuery("#voiceDisplay").attr("onclick","openVoice('"+viewVoiceValeue+"')");
+	    jQuery("#frame"+index).addClass('preview-Select');
+	    
+	}else{
+		jQuery("#frame"+index).removeClass('preview-Select');
+	}
+}
+/** 手动控制帧左右移动 */
+function myscroll(direction) {
+	if (direction == 'left') {
+		var lenght = jQuery("#preview-List").find("li").length;
+		if(lenght > 7){
+			jQuery("#preview-List").find("li:last").insertBefore(jQuery("#preview-List").find("li:first"));
+		}
+		jQuery("#preview-List").find("ul:first").animate( {
+			marginLeft : "0px"
+		}, 1, function() {
+			jQuery(this).find("li").removeClass('preview-Select');
+			jQuery(this).find("li:first").addClass('preview-Select');
+			var index = jQuery(this).find("span").html();
+			var type = jQuery(this).find("input:hidden").val();
+			previewDisplay(type,index);
+		}
+		);
+	} else {
+		jQuery("#preview-List").find("ul:first").animate( {
+			marginLeft : '-88px'
+		}, 1, function() {
+			jQuery(this).css({
+				marginLeft : "0px"
+			}).find("li:first").appendTo(this);
+			jQuery(this).find("li").removeClass('preview-Select');
+			jQuery(this).find("li:first").addClass('preview-Select');
+			var index = jQuery(this).find("span").html();
+			var type = jQuery(this).find("input:hidden").val();
+			previewDisplay(type,index);
+		}
+
+		);
+	}
+}
+
+var _refresh = {
+		trigger : false,
+		timmer : 0,
+		_start : function() {
+			var obj = document.getElementById("sec");
+			var sec = parseInt(obj.innerHTML);
+			if (sec > 1) {
+				sec--;
+				obj.innerHTML = sec;
+				this.timmer = window.setTimeout("_refresh._start()", 1000);
+			} else {
+				myscroll('right');
+				obj.innerHTML = 5;
+				this.timmer = window.setTimeout("_refresh._start()", 1000);
+			}
+		},
+		_stop : function() {
+			this.trigger = false;
+			jQuery("#palyBnt").html("播放");
+			clearTimeout(this.timmer);
+		},
+		onTrigger : function() {
+			clearTimeout(this.timmer);
+			if (this.trigger) {
+				jQuery("#palyBnt").html("播放");
+				this.trigger = false;
+				clearTimeout(this.timmer);
+			} else {
+				jQuery("#palyBnt").html("停止");
+				this.trigger = true;
+				this._start();
+			}
+		}
+	};
+
+//==== emms task =====// 
+//mobile way
+function changeMobileWay(value,manualId,uploadId,communicationId,selectContactsId) {
+	if (value == 1) {
+		$(":radio[name='emmsTemplateType']").each(function() {
+			if (jQuery(this).val() == "SU") {
+				jQuery(this).attr("disabled", "false");
+			}
+			if (jQuery(this).val() == "DU") {
+				jQuery(this).attr("disabled", "false");
+			}
+			if (jQuery(this).val() == "DM") {
+				jQuery(this).removeAttr("disabled");
+			}
+		});
+		$("#" + manualId).show();
+		$("#" + uploadId).hide();
+		$("#" + communicationId).hide();
+        $("#" + selectContactsId).hide();
+	} else if (value == 2) {
+		$(":radio[name='emmsTemplateType']").each(function() {
+			if (jQuery(this).val() == "SU") {
+				jQuery(this).attr("disabled", "false");
+			}
+			if (jQuery(this).val() == "DU") {
+				jQuery(this).attr("disabled", "false");
+			}
+			if (jQuery(this).val() == "DM") {
+				jQuery(this).removeAttr("disabled");
+			}
+		});
+		$("#" + uploadId).show();
+		$("#" + manualId).hide();
+		$("#" + communicationId).hide();
+        $("#" + selectContactsId).hide();
+	}else if(value == 3){
+		$("#" + uploadId).hide();
+		$("#" + manualId).hide();
+		$(":radio[name='emmsTemplateType']").each(function(){
+			if(jQuery(this).val()=="SM"){
+				//获取静态手工彩信模板
+				changeType('SM');
+				jQuery(this)[0].checked=true;
+			 }
+		     if(jQuery(this).val()=="SU"){
+		       jQuery(this).attr("disabled","false");
+		     }
+		     if(jQuery(this).val()=="DM"){
+		         jQuery(this).attr("disabled","false");
+		         jQuery(this).attr("checked",false);
+		     }
+		     if(jQuery(this).val()=="DU"){
+		         jQuery(this).attr("disabled","false");
+		     }
+		});
+		$("#" + communicationId).show();
+        $("#" + selectContactsId).hide();
+    }else if(value == 4){
+      $(":radio[name='emmsTemplateType']").each(function() {
+        if (jQuery(this).val() == "SU") {
+            jQuery(this).attr("disabled", "false");
+        }
+        if (jQuery(this).val() == "DU") {
+            jQuery(this).attr("disabled", "false");
+        }
+        if (jQuery(this).val() == "DM") {
+            jQuery(this).removeAttr("disabled");
+        }
+    });
+    $("#" + manualId).hide();
+    $("#" + uploadId).hide();
+    $("#" + communicationId).hide();
+    $("#" + selectContactsId).show();
+    }
+}
+/** 静态动态模板相互切换*/
+function changeType(value){
+	ajaxSubmit('POST', '/emmsTask/templateSelect', {"type" : value }, 'json', function(value) {
+		var obj = document.getElementById("selectTemplateId");
+		obj.options.length = 0;
+		var list = value;
+		for ( var i = 0; i < list.length; i++) {
+			obj.options[i] = new Option(list[i].value, list[i].key);
+		}
+	});
+	changeWarnByType(value);
+	$("#contentTypeId").val(value);
+}
+
+function changeWarnByType(value){
+	//$("input[@type=radio]").attr("checked",value);
+	if(value=="SM" || value == "SU"){
+		 $('input[name=emmsTemplateType]').get(0).checked=true;
+		$("#staticWarn").show();
+		$("#dynamicWarn").hide();
+	 }else if(value=="DM" || value == "DU"){
+		 $('input[name=emmsTemplateType]').get(1).checked=true;
+		 $("#staticWarn").hide();
+		 $("#dynamicWarn").show();
+     }
+}
+
+function changeTemplateDynaWarn(value){
+	if(value=="SM" || value == "SU"){
+		$("#templateDynaWarn").hide();
+	 }else if(value=="DM" || value == "DU"){
+		 $("#templateDynaWarn").show();
+     }
+}
+
+
+function changeTemplateModel(value,chooseTemplate,createTemplate,templateTypeTr) {
+	if (value == 1) {
+		$("#" + chooseTemplate).show();
+		$("#" + templateTypeTr).show();
+		$("#" + createTemplate).hide();
+		//获取静态手工彩信模板
+		//changeType('SM');
+//		$(":radio[name='emmsTemplateType']").each(function(){
+//				jQuery(this)[0].checked=true;
+//				jQuery(this)[1].checked=false;
+//				//jQuery(this).val(1);
+//		});
+		$("#templateModeId").val(1);
+	} else if (value == 2) {
+//		$("#crTemId").triggerHandler("click");
+		$("#" + chooseTemplate).hide();
+		$("#" + templateTypeTr).hide();
+//		$("#" + createTemplate).show();
+		$("#templateModeId").val(2);
+		
+//		$(":radio[name='emmsTemplateType']").each(function(){
+//			jQuery(this)[0].checked=false;
+//			jQuery(this)[1].checked=true;
+//			//jQuery(this).val(2);
+//		});
+	}
+	changeType($("input[name='emmsTemplateType']:checked").val());
+}
+
+function createTemplateDialog(urlVal, dialogId,title) {
+	$("#" + dialogId).dialog({
+		autoOpen : false,
+		modal : true,
+		bgiframe:true,
+		width : 723,
+		height : 500,
+		title : title,
+		close : function() {
+			//FIXME 根据模板保存成功文字判断需要修改
+			if($("#mmsCreateMsgId").html() == "保存成功!"){
+				$("#previewTemplateId").val($("#mmsTemplateId").val());
+				$("#templateContentId").val($("#mmsTemplateId").val());
+				$("#preCreTplName").html($("#cteTpeName").val());
+				$("#contentTypeId").val($('input[name=templateType]:checked').val());
+				var type = $('input[name=templateType]:checked').val();
+				changeType(type);
+				if(type=="SM"){
+				  $("input[name='emmsTemplateType']").get(0).checked=true;
+				  $("input[name='emmsTemplateType']").get(1).checked=false;
+				}else if(type=="DM"){
+				  $("input[name='emmsTemplateType']").get(0).checked=false;
+				  $("input[name='emmsTemplateType']").get(1).checked=true;
+				}
+			}
+		}
+	});
+	ajaxSubmit('POST', urlVal, '', '',function(value) {
+		$("#" + dialogId).html(value);
+		$("#" + dialogId).dialog("open");
+	});
+	return false;
+}
+
+/**
+ * 手机号码文件上传
+ * @param file 上传文件对象
+ * @param url 调用的URL
+ * @param processId 处理标识ID
+ * @returns {Boolean}
+ */
+function uploadMobileFile(file, uploadUrl) {
+	//上传文件
+	var fileName = $("#fileToUpload").val();
+	if(fileName) {
+		$("#loading").show();
+		$.ajaxFileUpload({
+			url : uploadUrl,//调用的上传的URL
+			secureuri : false,
+			fileElementId : file,//上传文件标签的ID
+			dataType : "json",
+			success : function(result, status) {
+				//var json = (new Function("return " + data))();// eval('(' + data + ')');
+				$("#loading").hide();
+	          	$("#uploadingWarnId").html("<div class='alert alert-error'>" +
+							"<button type='button' class='close' data-dismiss='alert'>&times;</button>"+ geti18n(result.message) +
+						"</div>");
+	          	$("#uploadingWarnId").show();
+	          	$("#mmsUploadingSignId").val(true);//上传是否成功标识
+	          	$("#alertMessageId").hide();//将错误提示消息隐藏
+			},
+			error : function(data, status, e) {
+				//alert(e);
+				$("#loading").hide();
+		        $("#uploadingWarnId").html("<div class='alert alert-error'>" +
+						"<button type='button' class='close' data-dismiss='alert'>&times;</button>上传失败" +
+					"</div>");
+		        $("#uploadingWarnId").show();
+		        $("#mmsUploadingSignId").val(false);//上传是否成功标识 
+			}
+		});
+	} else {
+		$("#uploadingWarnId")
+				.html(
+						"<div class='alert alert-error' id=''>"
+								+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+								+ "<strong>" + geti18n('upload_warning')
+								+ "</strong>" + "</div>");
+		$("#uploadingWarnId").show();
+	}
+	return false;
+}
+
+function checkEmmsSendPreview(alertMessageId) {
+
+	// Bug#8329: 短信发送，彩信发送页面勾选定时时间但没设置时间没提示
+	if ($("#timingSendCheckbox").is(":checked") && ($("#sttime").val() == null || $("#sttime").val() == "")) {
+		$("#" + alertMessageId)
+		.html(
+				"<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + geti18n('atTimeCanNotBeEmptyRemind')
+						+ "</strong>" + "</div>");
+		$("#" + alertMessageId).show();
+		return;
+	}
+	
+	var balance = $("#accountBalance").text();
+	var targetTayp = $(":radio[name='targetType']:checked").val();
+	if(balance <= 0){
+		//此计费账号余额不足,暂不能发送
+		$("#" + alertMessageId).html(
+				"<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>" + '\u6b64\u8ba1\u8d39\u8d26\u53f7\u4f59\u989d\u4e0d\u8db3,\u6682\u4e0d\u80fd\u53d1\u9001'
+						+ "</strong></div>");
+		$("#alertMessageId").show();
+	}else if( targetTayp == 2 && $("#mmsUploadingSignId").val()=="false"){
+		$("#" + alertMessageId).html(
+				"<div class='alert alert-error'>"
+						+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+						+ "<strong>"+geti18n('upload_successfully_Preview')+"</strong></div>");//请先上传文件成功后,在预览!
+		$("#" + alertMessageId).show();
+	}else{
+		ajaxSubmit('POST', "/emmsTask/checkSendPreview", $("#sendEmmsForm").serialize(), '', function(value) {
+			if (value.length == 0) {
+				$("#" + alertMessageId).html('');
+				dialog(true,'/emmsTask/sendPreview','emmsSendPreviewDialog','620','450','彩信发送预览','sendEmmsForm',false);
+				$("#mmsUploadingSignId").val(false);
+			} else {
+				$("#" + alertMessageId).html("<div class='alert alert-error'>"
+				+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+				+ "<strong>" + value
+				+ "</strong>" + "</div>");
+				$("#alertMessageId").show();
+			}
+	    });
+//		$.ajax({
+//			type : "POST",
+//			url : "/emmsTask/checkSendPreview",
+//			data : $("#sendEmmsForm").serialize(),
+//			success : function(text) {
+//				if (text.length == 0) {
+//					$("#" + alertMessageId).html('');
+//					dialog(true,'/emmsTask/sendPreview','emmsSendPreviewDialog','620','450','彩信发送预览','sendEmmsForm',false);
+//				} else {
+//					$("#" + alertMessageId).html("<div class='alert alert-error'>"
+//					+ "<button type='button' class='close' data-dismiss='alert'>&times;</button>"
+//					+ "<strong>" + text
+//					+ "</strong>" + "</div>");
+//					$("#alertMessageId").show();
+//				}
+//			},
+//			error : function(e) {
+//				alert("Error:" + e);
+//			}
+//		});
+	}
+	return false;	
+}
+
+function findPreviewId(){
+	var modeVal = $("#templateModeId").val();
+	if(modeVal == 1){
+		$("#previewTemplateId").val($("#selectTemplateId").find("option:selected").val());
+		$("#templateContentId").val($("#selectTemplateId").find("option:selected").val());
+	}
+	selectContacts();
+}
+
+function dynasPreview(url, parameterId, dialogId, width, height, title) {
+	$("#" + dialogId).dialog({
+		autoOpen : false,
+		modal : true,
+		bgiframe:true,
+		width : width,
+		height : height,
+		title : title,
+		resizable: false
+//		close : function() {
+//			if (closeEvents) {
+//				$("#" + formId).submit();
+//			}
+//		}
+	});
+	ajaxSubmit('POST', url, $("#" + parameterId).val(), '', function(value) {
+		$("#" + dialogId).html(value);
+		$("#" + dialogId).dialog("open");
+	});
+	return false;
+}
+
+//function checkRedirectSend(url, formId, divId){
+//	$.ajax({
+//		type : "POST",
+//		url : url,
+//		data : $("#"+formId).serialize(),
+//		success : function(text) {
+//            if (text.length == 0) {
+//            	$("#" + divId).html(text);
+//            	var templateId = $("#mmsTemplateId").val();
+//            	var templateType = $("#templateTypeId").val();
+//            	submitForm("/emmsTask/sendEmms?templateId="+templateId+"&templateType="+templateType,formId,null);
+//			}else{
+//				$("#" + divId).html(text);
+//			}
+//		},
+//		error : function(e) {
+//			alert("Error" + e);
+//		}
+//	});
+//}
+
+function checkRedirectSend(url, formId, divId) {
+	ajaxSubmit('POST', url, $("#" + formId).serialize(), '', function(value) {
+		if (value.length == 0) {
+			$("#" + divId).html(value);
+			var exportForm = document.getElementById(formId);
+			exportForm.action = "/emmsTask/sendEmms";
+			exportForm.method = "POST";
+			exportForm.submit();
+		} else {
+			$("#" + divId).html(value);
+		}
+	});
+}
+
+function ajaxSubmit(type, url, data, dataType, callback, error) {
+	$.ajax({
+		type : type,
+		url : url,
+		data : data,
+		dataType: dataType,
+		cache:false,
+		success : function(text) {
+			if(typeof callback != 'undefined' && callback instanceof Function){
+				callback(text);
+			}
+		},
+		error : function(e) {
+			if(typeof error != 'undefined' && error instanceof Function){
+				error(e);
+			}else{
+				//alert("Error" + e);
+			}
+		}
+	});
+}
+
+/**
+ * 获取声音、视频快播插件播放对象
+ * @param src 播放文件路径
+ * @param width 控制面板宽度
+ * @param height 控制面板高度
+ * @param controller 是否显示控制器面板
+ * @param autoplay 是否自动播放
+ * @returns {String}
+ */
+function getVoiceObject(src,width,height,controller,autoplay){
+	//var autoplay = false;
+	var voiceObject = "<object width=\""+width+"\" height=\""+height+"\" classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\" codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">"
+                      +"<param name=\"src\" value=\""+src+"\">"
+                      +"<param name=\"controller\" value=\""+controller+"\">"
+                      +"<param name=\"autoplay\" value=\""+autoplay+"\">"
+                      +"<param name=\"pluginspage\" value=\"http://www.apple.com/quicktime/download/index.html\">"
+                      +"<embed src=\""+src+"\"  width=\""+width+"\" height=\""+height+"\" controller=\""+controller+"\" autoplay=\""+autoplay+"\" />"
+                      +"</object>";
+	return voiceObject;
+}
+
+
+/**
+ * 彩信发送，文件上传改变事件
+ */
+function mmsUploadChange(){     
+     $("#mmsUploadingSignId").val(false);//上传是否成功标识 
+}

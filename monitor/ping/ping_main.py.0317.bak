@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+from mail import mailsend
+
+import multiprocessing
+import subprocess
+import datetime,time
+import re
+
+# Define
+def checker(ip):
+#
+    datekeeper=datetime.date.today()
+    timekeeper=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logfile="logs/"+ip+".txt."+str(datekeeper)
+    alertime=20
+    
+
+#
+    cmd = " (time wget -q -E -H -k -K -p -P logs/ "+ str(ip) +" ) 2>1.txt ; awk '/real/{print $2}' 1.txt "
+    p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
+    output, error = p.communicate()
+    #executetime=output.decode('UTF-8').split('\n')
+    executetime=output.split('\n')
+
+    if p.returncode:
+        data=timekeeper, str(ip), "unreachable"
+        f2 = open(logfile, 'a')
+        # python will convert \n to os.linesep
+        f2.write(str(data)+"\n")  
+        f2.close() 
+        # mail alert
+        mailsend.mailx(data)
+    elif p.returncode == 0:
+        data=timekeeper, str(ip), executetime[0]
+        f2 = open(logfile, 'a')
+        # python will convert \n to os.linesep
+        f2.write(str(data)+"\n")
+        f2.close()
+        #
+        t=re.split("m|s",executetime[0])
+        if (float(t[0]) >0 or float(t[1]) >= alertime):
+            mailsend.mailx(data)
+        
+
+# pool
+def start(iplist):
+        pool = multiprocessing.Pool(processes=2)
+        result=[]
+        for ip in iplist:
+            result.append(pool.apply_async(checker, (ip, )))	    
+        pool.close()
+        pool.join()
+
+
+
+
+
+
+# main block
+if __name__ == '__main__':
+
+    #f = open(r'C:\Python34\iplist.txt')
+    f = open('iplist.txt')
+    iplist = f.read().split()
+
+    while True:
+        start(iplist)
+        time.sleep(0.8)
+
+
+

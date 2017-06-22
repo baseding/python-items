@@ -1,0 +1,358 @@
+<!doctype html>
+
+
+
+<html>
+<head>
+    <title>随意通6</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="favicon.ico"  mce_href="favicon.ico" type="image/x-icon" />
+
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    
+    <SCRIPT src="jqueryalert/jquery.ui.draggable.js" type=text/javascript></SCRIPT>
+	<SCRIPT src="jqueryalert/jquery.alerts.js" type=text/javascript></SCRIPT>
+	<LINK media=screen href="jqueryalert/jquery.alerts.css" type=text/css rel=stylesheet>
+    
+    
+<script type="text/javascript" src="js/tagJs.js%3Fv=20170412212740"></script>
+<script type="text/javascript" src="js/emms.js%3Fv=20170412212740"></script>
+<script type="text/javascript" src="js/common.js"></script>
+    <!--[if IE 6]>
+    <link rel="stylesheet" href="css/ie6.css">
+    <![endif]-->
+</head>
+<body class="loginbg">
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="robots.txt.html"></a>
+        </div>
+    </div>
+</div>
+<div class="mainbg">
+    <section id="forms">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+	
+	
+
+<form id="loginFormId"   action="http://iiie.10690007.com/j_spring_security_check" method="post"   autocomplete="false">
+            <fieldset class="logininputbg">
+                <legend><h3>
+
+
+
+
+  
+    
+  
+
+???login.message???
+
+
+</h3></legend>
+                
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+
+<label id="messageId" class="alertinput" style="">
+
+</label>
+
+
+
+                
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+
+ 
+
+<label  class=alertinput ></label>
+
+                <ul>
+                    <li>
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+<label id="" class="" style="">
+???loginName???
+</label>
+
+
+</li>
+                    <li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+	
+
+
+
+<input id=""  name="j_username" type="text" placeholder="" value="" style="" onkeydown='' >
+
+<script type="text/javascript">
+	//Timing send dynamic effect	
+	$(function() {
+		if ('' == 'true') {
+			$("#").focusout(
+					function() {
+						if ($.trim($("#").val()) == "") {
+							var d = new Date();
+							var vYear = d.getFullYear();
+							var vMon = d.getMonth() + 1;
+							var vDay = d.getDate();
+							var h = d.getHours();
+							var m = d.getMinutes();
+							var se = d.getSeconds();
+							s = vYear + "" + (vMon < 10 ? "0" + vMon : vMon)
+									+ "" + (vDay < 10 ? "0" + vDay : vDay) + ""
+									+ (h < 10 ? "0" + h : h) + ""
+									+ (m < 10 ? "0" + m : m) + ""
+									+ (se < 10 ? "0" + se : se);
+							$("#").val("\u65b0\u77ed\u4fe1\u4efb\u52a1" + s);//新短信任务
+						}
+					});
+		};
+		if ('' == 'true') {
+			var inputPage = $("#" + '');
+			var value = inputPage.val();
+			var totalpages = $("#" + '').val();
+			if (parseInt(value) > parseInt(totalpages))
+				inputPage.val(1);
+			if (null == totalpages || totalpages == 0) {
+				inputPage.attr("disabled", "true");
+			}
+			inputPage.bind("keydown", function(e) {
+				if (e.which == 0) {
+					e.preventDefault();
+				} else {
+					if (e.which >= 48 && e.which < 58) {
+						var value = parseInt(inputPage.val() + (e.which - 48));
+						if (!(value > 0 && value <= $("#" + '').val()))
+							e.preventDefault();
+					} else if (e.which >= 96 && e.which < 106) {
+						var value = parseInt(inputPage.val() + (e.which - 96));
+						if (!(value > 0 && value <= $("#" + '').val()))
+							e.preventDefault();
+					} else if (!(e.which == 8 || e.which == 46))
+						e.preventDefault();
+				};
+			});
+		};
+	});
+</script>
+
+</li>
+                    <li>
+
+
+
+
+
+
+
+  
+    
+  
+
+
+
+
+<label id="" class="" style="">
+???loginPass???
+</label>
+
+
+</li>
+                    <li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+<input  name="j_password" type="password" class="" placeholder="" value="" style="" onkeydown=''>
+
+
+
+</li>
+                    <li>
+
+
+
+
+
+
+
+	
+
+
+
+	
+		
+	
+
+<input type="button" class=btn value="???login???" onClick="checkFormLogin();" /></li>
+                </ul>
+            </fieldset>
+        </form>
+
+    </section>
+</div>
+</body>
+
+<div class="footbg">Copyright &copy; 1998 - 2013 Etonenet. All Rights Reserved. <br/><a href="http://www.etonenet.com" target="_blank" class="footlogo_et"></a></div>
+</html> 
+
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(document).keydown(function(e) {
+			if (document.addEventListener) {// firefox
+				document.addEventListener("keypress", fireFoxHandler, true);
+			} else {// IE
+				document.attachEvent("onkeypress", ieHandler);
+			}
+			function fireFoxHandler(evt) {
+				if (evt.keyCode == 13) {
+					$(":focus").blur();
+					entersubmit('loginFormId','/j_spring_security_check');
+				}
+			}
+			function ieHandler(evt) {
+				if (evt.keyCode == 13) {
+					$(":focus").blur();
+					entersubmit('loginFormId','/j_spring_security_check');
+				}
+			}
+		});
+	});
+</script>

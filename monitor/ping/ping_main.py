@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+from mail import mailsend
+from mysql import mysqlopt
+
+import multiprocessing
+import subprocess
+import datetime,time
+import re
+
+# Define
+def checker(ip):
+#
+    datekeeper=datetime.date.today()
+    timekeeper=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logfile="logs/"+ip+".txt."+str(datekeeper)
+    alertime=20
+    
+
+#
+    cmd = " (time wget -q -E -H -k -K -p -P logs/ "+ str(ip) +" ) 2>1.txt ; awk '/real/{print $2}' 1.txt "
+    p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
+    output, error = p.communicate()
+    #executetime=output.decode('UTF-8').split('\n')
+    executetime=output.split('\n')
+
+
+    if p.returncode:
+        #
+        mysqlopt.DoUpdate(item_name=str(ip),result="unreachable",currenttime=timekeeper)
+
+        # mail alert
+        data=timekeeper, str(ip), "unreachable"
+        mailsend.mailx(data)
+    elif p.returncode == 0:
+        #
+        t=re.split("m|s",executetime[0])
+        result_sec=float(t[0]) * 60 +float(t[1])
+        #
+        mysqlopt.DoUpdate(item_name=str(ip),result=result_sec,currenttime=timekeeper)
+        if result_sec >= alertime:
+            data=timekeeper, str(ip), executetime[0]
+            mailsend.mailx(data)
+       
+
+# pool
+def start(iplist):
+        pool = multiprocessing.Pool(processes=2)
+        result=[]
+        for ip in iplist:
+            result.append(pool.apply_async(checker, (ip, )))	    
+        pool.close()
+        pool.join()
+
+
+
+
+
+
+# main block
+if __name__ == '__main__':
+
+    #f = open(r'C:\Python34\iplist.txt')
+    f = open('iplist.txt')
+    iplist = f.read().split()
+    cron=8
+
+    while True:
+        # set cron time
+        if int(datetime.datetime.now().strftime("%H")) >= cron:
+            start(iplist)
+            time.sleep(20)
+
+
+

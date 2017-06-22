@@ -1,0 +1,1159 @@
+@charset "utf-8";
+/***********************************************************/
+/* @(#)main.css                                            */
+/*                                                         */
+/* $Revision: 1.0 $                                        */
+/* $Date: 2012/12/07 09:46:00 $                            */
+/*                                                         */
+/* Copyright 2012 ETONENET, INC. All Rights Reserved.      */
+/* @author Roger                                           */
+/* @version $Revision: 1.0 $                               */
+/*                                                         */
+/*                                                         */
+/* Use with IE9, IE8, IE7, IE6 style css                   */
+/* Use with FIREFOX, Chrome, Opera style css               */
+/* CS tag styles                                           */
+/*                                                         */
+/*   #element {                                            */
+/*        property:all-Firefox;                            */
+/*        property:all-Chrome;                             */
+/*        property:all-Opera;                              */
+/*        property:all-ie\9;                               */
+/*        property:gte-ie8\0/;                             */
+/*        *property:lte-ie7;                               */ 
+/*        +property:ie7;                                   */
+/*        _property:ie6;                                   */
+/*   }                                                     */
+/*   :root .element{property:ie9}                          */
+/*                                                         */
+/* Screen Resolution 1024 x 768                            */
+/* Browser,Safe Area                                       */
+/* Mac OS X: Safari,909 x 519                              */
+/* Mac OS X: Firefox,909 x 507                             */
+/* Windows Vista: IE,849 x 621                             */
+/* Windows Vista: Firefox,849 x 608                        */
+/* Windows XP: IE,998 x 615                                */
+/* Windows XP: Firefox,998 x 622                           */
+/* Safe area for all browsers,849 x 507                    */
+/* --------------------------------------------------------*/
+/* Screen Resolution 1280 x 960                            */
+/* Browser,Safe Area                                       */
+/* Mac OS X: Safari,1165 x 711                             */
+/* Mac OS X: Firefox,1165 x 699                            */
+/* Windows Vista: IE,1105 x 813                            */
+/* Windows Vista: Firefox,1105 x 800                       */
+/* Windows XP: IE,1254 x 807                               */
+/* Windows XP: Firefox,1254 x 814                          */
+/* Safe area for all browsers,1105 x 699                   */
+/* --------------------------------------------------------*/
+/* Screen Resolution 1600 x 1200                           */
+/* Browser,Safe Area                                       */
+/* Mac OS X: Safari,1485 x 951                             */
+/* Mac OS X: Firefox,1485 x 939                            */
+/* Windows Vista: IE,1425 x 1053                           */
+/* Windows Vista: Firefox,1425 x 1040                      */
+/* Windows XP: IE,1574 x 1047                              */
+/* Windows XP: Firefox,1574 x 1054                         */
+/* Safe area for all browsers,1425 x 939                   */
+/***********************************************************/
+* {
+-webkit-text-size-adjust:none;
+-webkit-font-smoothing: subpixel-antialiased;
+font-family: "微软雅黑", "myriad-pro-1","myriad-pro-2","Helvetica","Arial","Tahoma", "Geneva", sans-serif;
+
+}
+.loginbg{
+background: url("../images/dark_denim.png") repeat scroll left top #333333;	
+}
+.mainbg{
+background: url("../images/white_texture.png") repeat scroll left top #F2F2F2;
+width:100%;
+margin-top:40px;
+height:360px;
+padding-top:20px;
+}
+.footbg{
+background: url("../images/footer_shadow.png") repeat-x scroll 0 0 transparent;
+_background: url("../images/footer_shadow.gif") repeat-x scroll 0 0 transparent;
+text-align:center;
+padding:40px;
+color:#fff;
+font-size:11px;
+text-transform:uppercase;
+}
+.navbar-inverse .navbar-inner{
+-webkit-box-shadow: 0px 0px 4px 0px #999;
+-moz-box-shadow: 0px 0px 4px 0px #999999;
+box-shadow: 0px 0px 4px 0px #999;
+background: #FAFAFA;
+background: -moz-linear-gradient(top, #FAFAFA 0%, #FAFAFA 51%, #F2F2F2 51%, #F2F2F2 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FAFAFA), color-stop(51%, #FAFAFA), color-stop(51%, #F2F2F2), color-stop(100%, #F2F2F2));
+background: -webkit-linear-gradient(top, #FAFAFA 0%, #FAFAFA 51%, #F2F2F2 51%, #F2F2F2 100%);
+background: -o-linear-gradient(top, #FAFAFA 0%, #FAFAFA 51%, #F2F2F2 51%, #F2F2F2 100%);
+background: -ms-linear-gradient(top, #FAFAFA 0%, #FAFAFA 51%, #F2F2F2 51%, #F2F2F2 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#f2f2f2',GradientType=0);
+background: linear-gradient(top, #FAFAFA 0%, #FAFAFA 51%, #F2F2F2 51%, #F2F2F2 100%);
+border:0px none;
+}
+.navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
+background: #E6F4CD;
+background: -moz-linear-gradient(center top , #E6F4CD 0%, #E6F4CD 49%, #D2F499 50%, #D2F499 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #E6F4CD), color-stop(51%, #E6F4CD), color-stop(51%, #D2F499), color-stop(100%, #D2F499));
+background: -webkit-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -o-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -ms-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6F4CD', endColorstr='#D2F499',GradientType=0);
+background: linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+color: #3D4F26;
+}
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+box-shadow: 0 0px 0px rgba(0, 0, 0, 0.125);
+}
+.navbar-inverse .brand, .navbar-inverse .nav > li > a {
+color: #444;;
+text-shadow: 0 0px 0 rgba(0, 0, 0, 0.25);
+}
+.navbar-inverse .brand{width:109px;height:10px;display:block;background: url("../images/logo.png") no-repeat left top;_background: url("../images/logo.gif") no-repeat left top;margin-top:7px;_margin-left:0px;}
+.navbar-inverse .brand:hover{color: #7a9f4d;}
+.navbar-inverse .nav > li > a:focus, .navbar-inverse .nav > li > a:hover{
+color: #7a9f4d;
+background: #f4f4f4;
+background: -moz-linear-gradient(center top , #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(51%, #f4f4f4), color-stop(51%, #eaeaea), color-stop(100%, #eaeaea));
+background: -webkit-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+background: -o-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+background: -ms-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#eaeaea',GradientType=0);
+background: linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+}
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+box-shadow: 0px -4px 0px rgba(148, 200, 60, 1) inset;
+
+}
+.navbar .nav{border-left: 1px solid #D2D2D2;}
+.navbar .nav > li{	border-right: 1px solid #D2D2D2;}
+.nav-collapse.collapse{_width:500px;}
+.nav-collapse.collapse .nav li{_display:inline;}
+.nav-collapse .nav li .active {_color: #3D4F26;_background: none;_border:0px none !important;}
+.nav-collapse ul,.nav-collapse li,.nav-collapse li a{_border:0px none !important;}
+.nav-collapse{_margin-top:15px;}
+.nav-collapse li{_padding:5px 20px;}
+.navbar-inverse .btn-navbar:active{_BACKGROUND-COLOR:#E6F4CD;}
+.navbar-inverse .active{_BACKGROUND-COLOR:#E6F4CD;}
+.logininputbg{border: 1px solid #D2D2D2;border-radius:8px; margin:20px auto;width:55%;height:300px;background: url("../images/monetize-left-feature.png") no-repeat right bottom transparent;_background: url("../images/monetize-left-feature.gif") no-repeat right bottom transparent;}
+.logininputbg legend{width:auto;_width:300px;border:0px none;}
+.logininputbg h3{padding-left:10px;padding-right:10px;width:auto;margin-bottom:0px;_margin-bottom:10px;}
+.footlogo_etmob{background: url("../images/logo_etmob.png") no-repeat 0 0 transparent;_background: url("../images/logo_etmob.gif") no-repeat 0 0 transparent;display:inline-block; width:130px;height:20px; margin:0px 20px auto;}
+.footlogo_et{background: url("../images/logo_et.png") no-repeat 0 0 transparent;_background: url("../images/logo_et.gif") no-repeat 0 0 transparent;display:inline-block; width:85px;height:30px; margin:25px 10px auto;}
+.footlogo_iiie{background: url("../images/logo_iiie.png") no-repeat 0 0 transparent;_background: url("../images/logo_iiie.gif") no-repeat 0 0 transparent;display:inline-block; width:89px;height:22px; margin:0px auto;}
+.alertinput{background: url("../images/ex_alert.png") no-repeat 0 0 transparent;_background: url("../images/ex_alert.gif") no-repeat 0 0 transparent;  text-indent:20px;margin:10px 20px;font-weight:bold;color:#ff3300;font-size:14px;}
+.container-fluid{background: url("../images/white_texture.png") repeat scroll left top #F2F2F2;}
+.row-fluid{margin-top:20px;}
+.nav-list .nav-header{
+border-bottom: 1px solid #cccccc;
+background: #dadada #eaeaea;
+filter:progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFEAEAEA', endColorstr='#FFDADADA');
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaeaea), color-stop(100%, #dadada));
+background-image: -webkit-linear-gradient(top, #eaeaea 0%, #dadada 100%);
+background-image: -moz-linear-gradient(top, #eaeaea 0%, #dadada 100%);
+background-image: -o-linear-gradient(top, #eaeaea 0%, #dadada 100%);
+background-image: linear-gradient(top, #eaeaea 0%, #dadada 100%);
+text-shadow: 0 0px 0 rgba(255, 255, 255, 0);
+font-size:14px;
+color:#888;
+}
+.span2 li{_border: 0px none;_background:none;}
+.span2 li.menu{_border-bottom: 1px dotted #cccccc;}
+.nav-list > li{border-bottom: 1px solid #E5E5E5;}
+.nav-list > li > a,.nav-list > li{background: #F2F2F2;color: #3D4F26; padding-left:0px;padding-right:0px;}
+.nav-list > li > a:hover,.nav-list > li:hover{
+color: #7a9f4d;
+background: #f4f4f4;
+background: -moz-linear-gradient(center top , #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(51%, #f4f4f4), color-stop(51%, #eaeaea), color-stop(100%, #eaeaea));
+background: -webkit-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+background: -o-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+background: -ms-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff4f4f4', endColorstr='#ffeaeaea',GradientType=0);
+background: linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+}
+.nav-list > li > a:focus,.nav-list > li > a:active{color: #7a9f4d;}
+
+.nav-list > .active > a,
+.nav-list > .active > a:hover,.nav-list > .active:hover {
+color: #7a9f4d;
+text-shadow: 0 0px 0 rgba(0, 0, 0, 0);
+background: #E6F4CD;
+background: -moz-linear-gradient(center top , #E6F4CD 0%, #E6F4CD 49%, #D2F499 50%, #D2F499 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #E6F4CD), color-stop(51%, #E6F4CD), color-stop(51%, #D2F499), color-stop(100%, #D2F499));
+background: -webkit-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -o-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -ms-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffE6F4CD', endColorstr='#ffD2F499',GradientType=0);
+background: linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+}
+.sidebar-nav {padding: 0;}
+.sidebar-nav fieldset{margin:10px 20px;border-radius: 6px;border: 1px solid #D2D2D2;}
+.sidebar-nav fieldset legend label{padding:5px 10px;font-size:18px;font-weight:bold;}
+.sidebar-nav .navgo{padding:10px 20px;color: #7a9f4d;font-weight:bold;}
+.loginbg .ctlnav{
+margin:0px;
+border-top: 1px solid #ddd;
+background: #E5E5E5 #F2F2F2;
+filter:progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#E5E5E5', endColorstr='#F2F2F2');
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #E5E5E5), color-stop(100%, #F2F2F2));
+background-image: -webkit-linear-gradient(top, #E5E5E5 0%, #F2F2F2 100%);
+background-image: -moz-linear-gradient(top, #E5E5E5 0%, #F2F2F2 100%);
+background-image: -o-linear-gradient(top, #E5E5E5 0%, #F2F2F2 100%);
+background-image: linear-gradient(top, #E5E5E5 0%, #F2F2F2 100%);
+}
+.loginbg .ctlnav a,.loginbg .ctlnav div{display:inline-block; margin:10px;}
+.loginbg .ctlnav div{_display:none;}
+.loginbg .ctlnav a,#mmsTemplateCreateForm .btn,#mmsTemplateEditForm .btn{color:#fff;}
+.loginbg .queryko,.loginbg .qak{overflow-x:auto;_overflow-x:scroll;overflow-y:hidden;}
+.loginbg .queryko table{border-top:1px #ccc dotted;width:100%;}
+.loginbg .queryko form{margin:0px;}
+.loginbg .queryko{_background:#fdfdfd;}
+.loginbg .queryko td{background:#fdfdfd;border-bottom:1px #ccc dotted;padding:10px 0px 0px 20px; border-collapse:separate !important; white-space:nowrap;_border-collapse:collapse !important;_background:none;}
+.loginbg .queryko .ftdr{_width:100px !important;}
+.loginbg .queryko .ftdd{_width:450px !important;}
+.loginbg .queryko .ftdw{_width:250px !important;}
+.loginbg .queryko td input,.loginbg .queryko td select{_width:80% !important;}
+.loginbg .queryko .nok{border-top:0px none;}
+.loginbg .queryko td .btn{margin-bottom:10px;}
+.loginbg .queryko td label{_width:auto;}
+.loginbg .queryko td input[type="text"]{width:150px;}
+.loginbg .queryko .nupa #pageId,.loginbg .queryko .nupa #taskPageId{width:30px; text-align:center;}
+.loginbg .queryko .isod{display:inline-block;}
+input[type="radio"], input[type="checkbox"] {margin: 4px 0 2px 12px;}
+.edp td input[type="text"],.edp td textarea{width:95% !important;}
+.edp td .textarea,.edp #templateContentId{_width:95% !important;}
+.edp td select{width:96.5% !important;}
+
+td.ftdr{width:60px !important;_width:80px !important;_display:table !important;white-space:nowrap;padding-right:10px;}
+td.ftip{width:200px;padding-right:10px;}
+.loginbg .queryko td input{_display:block;}
+.loginbg .queryko td select{width:165px;}
+.loginbg .qak td,.loginbg .qak th{white-space:nowrap;}
+.sidebar-nav .pager{
+background: #dadada #eaeaea;
+filter:progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFEAEAEA', endColorstr='#FFDADADA');
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaeaea), color-stop(100%, #dadada));
+background-image: -webkit-linear-gradient(top, #eaeaea 0%, #dadada 100%);
+background-image: -moz-linear-gradient(top, #eaeaea 0%, #dadada 100%);
+background-image: -o-linear-gradient(top, #eaeaea 0%, #dadada 100%);
+background-image: linear-gradient(top, #eaeaea 0%, #dadada 100%);
+width:100%;
+height:auto;
+padding:0px;
+}
+.sidebar-nav .even{background:#fff;}
+.sidebar-nav .pager div{margin:8px;}
+.sidebar-nav .pager div.short{width:90px;margin-top:8px;}
+.sidebar-nav .pager div.short input.btn{height:26px;font-family: "微软雅黑", "myriad-pro-1","myriad-pro-2","Helvetica","Arial","Tahoma", "Geneva", sans-serif;}
+.well {
+background-color: #F2F2F2;
+border: 1px solid #E5E5E5;
+border-radius:8px; 
+box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+}
+.sidebar-nav fieldset table{width:100%;margin:0px;}
+.loginbg .cdre{width:100%;margin:0px;}
+.sidebar-nav fieldset table td{border-bottom:1px #ccc dotted;padding:5px;}
+.loginbg .cdre td{border-bottom:1px #ccc dotted;padding:5px;}
+.loginbg .cdre td input{ margin-bottom: 1px;}
+.sidebar-nav fieldset table td a,.sidebar-nav fieldset table td div,.loginbg .cdre a,.loginbg .cdre div{display:inline-block; margin:5px;}
+.loginbg .cdre a{color:#fff;}
+.loginbg .ui-dialog-titlebar{margin-top:5px;}
+li.menu{text-indent:9px;}
+.loginbg .ui-dialog{
+-webkit-box-shadow: 2px 2px 8px 0px #000;
+-moz-box-shadow: 2px 2px 8px 0px #000;
+box-shadow: 2px 2px 8px 0px #000;	
+}
+.sidebar-nav .pager .defulatCss,.sidebar-nav .pager .defulatCss div{float:left;}
+.sidebar-nav .pager span{color:#888;display:inline-block; padding-top:15px;}
+.nav-list li ins{width:16px;height:16px;float:left;margin-top:7px;margin-left:18px;background-image: url("../images/ico.png"); _background-image: url("../images/ico.gif"); background-repeat:no-repeat;display:block;}
+.nav-list .nav-header ins{margin-top:3px;margin-left:0px;margin-right:3px;}
+.nav-list .manager{background-position:left top;}
+.nav-list .info{background-position:left -16px;}
+.nav-list .syslog{background-position:left -32px;}
+.nav-list .account{background-position:left -48px;}
+.nav-list .role{background-position:left -64px;}
+.nav-list .usergroup{background-position:left -80px;}
+.nav-list .user{background-position:left -96px;}
+.nav-list .send{background-position:left -112px;}
+.nav-list .template{background-position:left -128px;}
+.nav-list .sendsms{background-position:left -144px;}
+.nav-list .task{background-position:left -160px;}
+.nav-list .outbox{background-position:left -240px;}
+.nav-list .report{background-position:left -192px;}
+.nav-list .tasksearch{background-position:left -208px;}
+.nav-list .detailsearch{background-position:left -224px;}
+.nav-list .inbox{background-position:left -176px;}
+.nav-list .contact{background-position:left -256px;}
+.nav-list .contactlist{background-position:left -272px;}
+.nav-list .contactMember{background-position:left -288px;}
+.nav-list .emmssend{background-position:left -304px;}
+.nav-list .emmssendTemplate{background-position:left -320px;}
+.nav-list ins.manager,.nav-list ins.send,.nav-list ins.report,.nav-list ins.contact,.nav-list ins.emmssend{margin-left:15px;margin-right:10px;_margin-left:0px;}
+.delow{margin:0px auto;width:500px;}
+.delow a{float:left; margin:5px 20px;}
+#index{height:auto;}
+.landing{width:90%;height:auto;margin-top:20px;margin-left:20px;background: url("../images/landing-col1.png") no-repeat left top;_background: url("../images/landing-col1.gif") no-repeat left 10px;display:block;font-size:16px;}
+.landing ul li{border-bottom: 1px dotted #ccc;padding:10px 2px;color:#888;width:100%;}
+.landing ul{margin-left:290px;}
+.sidebar-nav .spanDivClass{float:right;width:auto; text-align:right;}
+.sidebar-nav .pagination{margin:0px 10px 10px; width:auto;}
+.sidebar-nav .table{margin-bottom:10px;}
+button.pos_bt1 {
+	margin-top: 30px;
+    margin-left: 180px;
+
+}
+button.pos_bt2 {
+	margin-top: 30px;
+    margin-left: 60px;
+
+}
+
+.thead_data,.headerClass{	
+background: #dadada #eaeaea;
+filter:progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#F2F2F2', endColorstr='#ffffff');
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #F2F2F2), color-stop(100%, #ffffff));
+background-image: -webkit-linear-gradient(top, #F2F2F2 0%, #ffffff 100%);
+background-image: -moz-linear-gradient(top, #F2F2F2 0%, #ffffff 100%);
+background-image: -o-linear-gradient(top, #F2F2F2 0%, #ffffff 100%);
+background-image: linear-gradient(top, #F2F2F2 0%, #ffffff 100%);
+text-transform:uppercase;
+text-align:center !important;
+white-space:nowrap;
+}
+
+th.next i,th.prev i{cursor:pointer;padding:0px 5px;}
+th.next i:hover,th.prev i:hover{
+color: #7a9f4d;
+background: #E6F4CD;
+background: -moz-linear-gradient(center top , #E6F4CD 0%, #E6F4CD 49%, #D2F499 50%, #D2F499 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #E6F4CD), color-stop(51%, #E6F4CD), color-stop(51%, #D2F499), color-stop(100%, #D2F499));
+background: -webkit-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -o-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -ms-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffE6F4CD', endColorstr='#ffD2F499',GradientType=0);
+background: linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+}
+.datepicker-days .table-condensed td{cursor:pointer;}
+.datepicker-days .table-condensed .day:hover{
+color: #7a9f4d;
+background: #f4f4f4;
+background: -moz-linear-gradient(center top , #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(51%, #f4f4f4), color-stop(51%, #eaeaea), color-stop(100%, #eaeaea));
+background: -webkit-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+background: -o-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+background: -ms-linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff4f4f4', endColorstr='#ffeaeaea',GradientType=0);
+background: linear-gradient(top, #f4f4f4 0%, #f4f4f4 51%, #eaeaea 51%, #eaeaea 100%);
+}
+.datepicker-days .table-condensed .old,.datepicker-days .table-condensed .active{
+color: #7a9f4d;
+background: #E6F4CD;
+background: -moz-linear-gradient(center top , #E6F4CD 0%, #E6F4CD 49%, #D2F499 50%, #D2F499 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #E6F4CD), color-stop(51%, #E6F4CD), color-stop(51%, #D2F499), color-stop(100%, #D2F499));
+background: -webkit-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -o-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -ms-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffE6F4CD', endColorstr='#ffD2F499',GradientType=0);
+background: linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+}
+.datepicker-days .table-condensed .old,.datepicker-days .table-condensed .old:hover,.datepicker-days .table-condensed .new,.datepicker-days .table-condensed .new:hover{color:#ccc;cursor:not-allowed;background:none;}
+.datepicker-days .table-condensed th.dow{
+text-align:center;
+width:20px;
+color: #7a9f4d;
+background: #E6F4CD;
+background: -moz-linear-gradient(center top , #E6F4CD 0%, #E6F4CD 49%, #D2F499 50%, #D2F499 100%) repeat scroll 0 0 transparent;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #E6F4CD), color-stop(51%, #E6F4CD), color-stop(51%, #D2F499), color-stop(100%, #D2F499));
+background: -webkit-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -o-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+background: -ms-linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffE6F4CD', endColorstr='#ffD2F499',GradientType=0);
+background: linear-gradient(top, #E6F4CD 0%, #E6F4CD 51%, #D2F499 51%, #D2F499 100%);
+}
+.datepicker-days .table-condensed td{text-align:center;border:1px #ccc dotted;}
+.precontent{white-space:pre;}
+
+
+#tree ul, li{
+
+  list-style: none;
+
+}
+
+.pagelinks {
+    background-color: #D1D1D1;
+    padding: 2px;
+}
+
+.jPaginate{
+    height:34px;
+    position:relative;
+    color:#a5a5a5;
+    font-size:small;   
+	width:100%;
+}
+.jPaginate a{
+    line-height:15px;
+    height:18px;
+    cursor:pointer;
+    padding:2px 5px;
+    margin:2px;
+    float:left;
+}
+.jPag-control-back{
+	position:absolute;
+	left:0px;
+}
+.jPag-control-front{
+	position:absolute;
+	top:0px;
+}
+.jPaginate span{
+    cursor:pointer;
+}
+ul.jPag-pages{
+    float:left;
+    list-style-type:none;
+    margin:0px 0px 0px 0px;
+    padding:0px;
+}
+ul.jPag-pages li{
+    display:inline;
+    float:left;
+    padding:0px;
+    margin:0px;
+}
+ul.jPag-pages li a{
+    float:left;
+    padding:2px 5px;
+}
+span.jPag-current{
+    cursor:default;
+    font-weight:normal;
+    line-height:15px;
+    height:18px;
+    padding:2px 5px;
+    margin:2px;
+    float:left;
+}
+ul.jPag-pages li span.jPag-previous,
+ul.jPag-pages li span.jPag-next,
+span.jPag-sprevious,
+span.jPag-snext,
+ul.jPag-pages li span.jPag-previous-img,
+ul.jPag-pages li span.jPag-next-img,
+span.jPag-sprevious-img,
+span.jPag-snext-img{
+    height:22px;
+    margin:2px;
+    float:left;
+    line-height:18px;
+}
+
+ul.jPag-pages li span.jPag-previous,
+ul.jPag-pages li span.jPag-previous-img{
+    margin:2px 0px 2px 2px;
+    font-size:12px;
+    font-weight:bold;
+        width:10px;
+
+}
+ul.jPag-pages li span.jPag-next,
+ul.jPag-pages li span.jPag-next-img{
+    margin:2px 2px 2px 0px;
+    font-size:12px;
+    font-weight:bold;
+    width:10px;
+}
+span.jPag-sprevious,
+span.jPag-sprevious-img{
+    margin:2px 0px 2px 2px;
+    font-size:18px;
+    width:15px;
+    text-align:right;
+}
+span.jPag-snext,
+span.jPag-snext-img{
+    margin:2px 2px 2px 0px;
+    font-size:18px;
+    width:15px;
+     text-align:right;
+}
+ul.jPag-pages li span.jPag-previous-img{
+    background:transparent url(../img/previous.png) no-repeat center right;
+            }
+ul.jPag-pages li span.jPag-next-img{
+    background:transparent url(../img/next.png) no-repeat center left;
+            }
+span.jPag-sprevious-img{
+    background:transparent url(../img/sprevious.png) no-repeat center right;
+            }
+span.jPag-snext-img{
+    background:transparent url(../img/snext.png) no-repeat center left;
+            }
+            
+.input-boder {
+    background: url("g_images/bg_input.gif") repeat-x scroll 0 0 #FFFFFF;
+    border: 1px solid #B8CBD9;
+    color: #223B4D;
+    font-family: "微软雅黑", "myriad-pro-1","myriad-pro-2","Helvetica","Arial","Tahoma", "Geneva", sans-serif;
+    font-size: 12px;
+    height: 17px;
+    padding: 2px 0 0 3px;
+    width: 158px;
+}
+
+.btn-pages {
+    background: url("../img/pages.gif") no-repeat scroll -120px -5px transparent;
+    border: medium none;
+    color: #223B4D;
+    cursor: pointer;
+    font-family: "微软雅黑", "myriad-pro-1","myriad-pro-2","Helvetica","Arial","Tahoma", "Geneva", sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    height: 21px;
+    width: 30px;
+}
+.btn-pages:hover {
+    background-position: -120px -35px;
+}
+ .btn-pages:active {
+    background-position: -120px -65px;
+}
+.pages-go {
+    float: top;
+    overflow: hidden;
+    width: 25px;
+}
+.bs-docs-sidebar li{_line-height:26px;}
+.row-fluid .span2{_float:left;_width:200px;}
+.row-fluid .span10{_float:left;_width:80%;_margin-left:20px;_overflow:hidden;}
+.nav-list{_padding-left:0px;_padding-right:0px;}
+.pagination li{_display:inline;_padding-left:10px;_padding-right:10px;}
+.edp input,.queryko input{_width:auto;}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+  _color: #ffffff;
+  _background-color: gray;
+
+}
+.btn-primary:active,
+.btn-primary.active {
+  _color: #ffffff;
+  _background-color: gray;
+}
+input{_width:1px !important;_width:auto !important;}
+.icon-glass
+,.icon-music
+,.icon-search
+,.icon-envelope
+,.icon-heart
+,.icon-star
+,.icon-star-empty
+,.icon-user
+,.icon-film
+,.icon-th-large
+,.icon-th
+,.icon-th-list
+,.icon-ok
+,.icon-remove
+,.icon-zoom-in
+,.icon-zoom-out
+,.icon-off
+,.icon-signal
+,.icon-cog
+,.icon-trash
+,.icon-home
+,.icon-file
+,.icon-time
+,.icon-road
+,.icon-download-alt
+,.icon-download
+,.icon-upload
+,.icon-inbox
+,.icon-play-circle
+,.icon-repeat
+,.icon-refresh
+,.icon-list-alt
+,.icon-lock
+,.icon-flag
+,.icon-headphones
+,.icon-volume-off
+,.icon-volume-down
+,.icon-volume-up
+,.icon-qrcode
+,.icon-barcode
+,.icon-tag
+,.icon-tags
+,.icon-book
+,.icon-bookmark
+,.icon-print
+,.icon-camera
+,.icon-font
+,.icon-bold
+,.icon-italic
+,.icon-text-height
+,.icon-text-width
+,.icon-align-left
+,.icon-align-center
+,.icon-align-right
+,.icon-align-justify
+,.icon-list
+,.icon-indent-left
+,.icon-indent-right
+,.icon-facetime-video
+,.icon-picture
+,.icon-pencil
+,.icon-map-marker
+,.icon-adjust
+,.icon-tint
+,.icon-edit
+,.icon-share
+,.icon-check
+,.icon-move
+,.icon-step-backward
+,.icon-fast-backward
+,.icon-backward
+,.icon-play
+,.icon-pause
+,.icon-stop
+,.icon-forward
+,.icon-fast-forward
+,.icon-step-forward
+,.icon-eject
+,.icon-chevron-left
+,.icon-chevron-right
+,.icon-plus-sign
+,.icon-minus-sign
+,.icon-remove-sign
+,.icon-ok-sign
+,.icon-question-sign
+,.icon-info-sign
+,.icon-screenshot
+,.icon-remove-circle
+,.icon-ok-circle
+,.icon-ban-circle
+,.icon-arrow-left
+,.icon-arrow-right
+,.icon-arrow-up
+,.icon-arrow-down
+,.icon-share-alt
+,.icon-resize-full
+,.icon-resize-small
+,.icon-plus
+,.icon-minus
+,.icon-asterisk
+,.icon-exclamation-sign
+,.icon-gift
+,.icon-leaf
+,.icon-fire
+,.icon-eye-open
+,.icon-eye-close
+,.icon-warning-sign
+,.icon-plane
+,.icon-calendar
+,.icon-random
+,.icon-comment
+,.icon-magnet
+,.icon-chevron-up
+,.icon-chevron-down
+,.icon-retweet
+,.icon-shopping-cart
+,.icon-folder-close
+,.icon-folder-open
+,.icon-resize-vertical
+,.icon-resize-horizontal
+,.icon-hdd
+,.icon-bullhorn
+,.icon-bell
+,.icon-certificate
+,.icon-thumbs-up
+,.icon-thumbs-down
+,.icon-hand-right
+,.icon-hand-left
+,.icon-hand-up
+,.icon-hand-down
+,.icon-circle-arrow-right
+,.icon-circle-arrow-left
+,.icon-circle-arrow-up
+,.icon-circle-arrow-down
+,.icon-globe
+,.icon-wrench
+,.icon-tasks
+,.icon-filter
+,.icon-briefcase
+,.icon-fullscreen {
+  _background-image: url("../images/glyphicons-halflings.gif");
+  _width:14px;
+  _height:16px;
+  _display:inline-block;
+  _float:right;
+  _margin-top:-20px;
+  _margin-left:-50px;
+  _cursor:pointer;
+}
+.ctlnav.icon-glass
+,.ctlnav .icon-music
+,.ctlnav .icon-search
+,.ctlnav .icon-envelope
+,.ctlnav .icon-heart
+,.ctlnav .icon-star
+,.ctlnav .icon-star-empty
+,.ctlnav .icon-user
+,.ctlnav .icon-film
+,.ctlnav .icon-th-large
+,.ctlnav .icon-th
+,.ctlnav .icon-th-list
+,.ctlnav .icon-ok
+,.ctlnav .icon-remove
+,.ctlnav .icon-zoom-in
+,.ctlnav .icon-zoom-out
+,.ctlnav .icon-off
+,.ctlnav .icon-signal
+,.ctlnav .icon-cog
+,.ctlnav .icon-trash
+,.ctlnav .icon-home
+,.ctlnav .icon-file
+,.ctlnav .icon-time
+,.ctlnav .icon-road
+,.ctlnav .icon-download-alt
+,.ctlnav .icon-download
+,.ctlnav .icon-upload
+,.ctlnav .icon-inbox
+,.ctlnav .icon-play-circle
+,.ctlnav .icon-repeat
+,.ctlnav .icon-refresh
+,.ctlnav .icon-list-alt
+,.ctlnav .icon-lock
+,.ctlnav .icon-flag
+,.ctlnav .icon-headphones
+,.ctlnav .icon-volume-off
+,.ctlnav .icon-volume-down
+,.ctlnav .icon-volume-up
+,.ctlnav .icon-qrcode
+,.ctlnav .icon-barcode
+,.ctlnav .icon-tag
+,.ctlnav .icon-tags
+,.ctlnav .icon-book
+,.ctlnav .icon-bookmark
+,.ctlnav .icon-print
+,.ctlnav .icon-camera
+,.ctlnav .icon-font
+,.ctlnav .icon-bold
+,.ctlnav .icon-italic
+,.ctlnav .icon-text-height
+,.ctlnav .icon-text-width
+,.ctlnav .icon-align-left
+,.ctlnav .icon-align-center
+,.ctlnav .icon-align-right
+,.ctlnav .icon-align-justify
+,.ctlnav .icon-list
+,.ctlnav .icon-indent-left
+,.ctlnav .icon-indent-right
+,.ctlnav .icon-facetime-video
+,.ctlnav .icon-picture
+,.ctlnav .icon-pencil
+,.ctlnav .icon-map-marker
+,.ctlnav .icon-adjust
+,.ctlnav .icon-tint
+,.ctlnav .icon-edit
+,.ctlnav .icon-share
+,.ctlnav .icon-check
+,.ctlnav .icon-move
+,.ctlnav .icon-step-backward
+,.ctlnav .icon-fast-backward
+,.ctlnav .icon-backward
+,.ctlnav .icon-play
+,.ctlnav .icon-pause
+,.ctlnav .icon-stop
+,.ctlnav .icon-forward
+,.ctlnav .icon-fast-forward
+,.ctlnav .icon-step-forward
+,.ctlnav .icon-eject
+,.ctlnav .icon-chevron-left
+,.ctlnav .icon-chevron-right
+,.ctlnav .icon-plus-sign
+,.ctlnav .icon-minus-sign
+,.ctlnav .icon-remove-sign
+,.ctlnav .icon-ok-sign
+,.ctlnav .icon-question-sign
+,.ctlnav .icon-info-sign
+,.ctlnav .icon-screenshot
+,.ctlnav .icon-remove-circle
+,.ctlnav .icon-ok-circle
+,.ctlnav .icon-ban-circle
+,.ctlnav .icon-arrow-left
+,.ctlnav .icon-arrow-right
+,.ctlnav .icon-arrow-up
+,.ctlnav .icon-arrow-down
+,.ctlnav .icon-share-alt
+,.ctlnav .icon-resize-full
+,.ctlnav .icon-resize-small
+,.ctlnav .icon-plus
+,.ctlnav .icon-minus
+,.ctlnav .icon-asterisk
+,.ctlnav .icon-exclamation-sign
+,.ctlnav .icon-gift
+,.ctlnav .icon-leaf
+,.ctlnav .icon-fire
+,.ctlnav .icon-eye-open
+,.ctlnav .icon-eye-close
+,.ctlnav .icon-warning-sign
+,.ctlnav .icon-plane
+,.ctlnav .icon-calendar
+,.ctlnav .icon-random
+,.ctlnav .icon-comment
+,.ctlnav .icon-magnet
+,.ctlnav .icon-chevron-up
+,.ctlnav .icon-chevron-down
+,.ctlnav .icon-retweet
+,.ctlnav .icon-shopping-cart
+,.ctlnav .icon-folder-close
+,.ctlnav .icon-folder-open
+,.ctlnav .icon-resize-vertical
+,.ctlnav .icon-resize-horizontal
+,.ctlnav .icon-hdd
+,.ctlnav .icon-bullhorn
+,.ctlnav .icon-bell
+,.ctlnav .icon-certificate
+,.ctlnav .icon-thumbs-up
+,.ctlnav .icon-thumbs-down
+,.ctlnav .icon-hand-right
+,.ctlnav .icon-hand-left
+,.ctlnav .icon-hand-up
+,.ctlnav .icon-hand-down
+,.ctlnav .icon-circle-arrow-right
+,.ctlnav .icon-circle-arrow-left
+,.ctlnav .icon-circle-arrow-up
+,.ctlnav .icon-circle-arrow-down
+,.ctlnav .icon-globe
+,.ctlnav .icon-wrench
+,.ctlnav .icon-tasks
+,.ctlnav .icon-filter
+,.ctlnav .icon-briefcase
+,.ctlnav .icon-fullscreen
+,.delow.icon-glass
+,.delow .icon-music
+,.delow .icon-search
+,.delow .icon-envelope
+,.delow .icon-heart
+,.delow .icon-star
+,.delow .icon-star-empty
+,.delow .icon-user
+,.delow .icon-film
+,.delow .icon-th-large
+,.delow .icon-th
+,.delow .icon-th-list
+,.delow .icon-ok
+,.delow .icon-remove
+,.delow .icon-zoom-in
+,.delow .icon-zoom-out
+,.delow .icon-off
+,.delow .icon-signal
+,.delow .icon-cog
+,.delow .icon-trash
+,.delow .icon-home
+,.delow .icon-file
+,.delow .icon-time
+,.delow .icon-road
+,.delow .icon-download-alt
+,.delow .icon-download
+,.delow .icon-upload
+,.delow .icon-inbox
+,.delow .icon-play-circle
+,.delow .icon-repeat
+,.delow .icon-refresh
+,.delow .icon-list-alt
+,.delow .icon-lock
+,.delow .icon-flag
+,.delow .icon-headphones
+,.delow .icon-volume-off
+,.delow .icon-volume-down
+,.delow .icon-volume-up
+,.delow .icon-qrcode
+,.delow .icon-barcode
+,.delow .icon-tag
+,.delow .icon-tags
+,.delow .icon-book
+,.delow .icon-bookmark
+,.delow .icon-print
+,.delow .icon-camera
+,.delow .icon-font
+,.delow .icon-bold
+,.delow .icon-italic
+,.delow .icon-text-height
+,.delow .icon-text-width
+,.delow .icon-align-left
+,.delow .icon-align-center
+,.delow .icon-align-right
+,.delow .icon-align-justify
+,.delow .icon-list
+,.delow .icon-indent-left
+,.delow .icon-indent-right
+,.delow .icon-facetime-video
+,.delow .icon-picture
+,.delow .icon-pencil
+,.delow .icon-map-marker
+,.delow .icon-adjust
+,.delow .icon-tint
+,.delow .icon-edit
+,.delow .icon-share
+,.delow .icon-check
+,.delow .icon-move
+,.delow .icon-step-backward
+,.delow .icon-fast-backward
+,.delow .icon-backward
+,.delow .icon-play
+,.delow .icon-pause
+,.delow .icon-stop
+,.delow .icon-forward
+,.delow .icon-fast-forward
+,.delow .icon-step-forward
+,.delow .icon-eject
+,.delow .icon-chevron-left
+,.delow .icon-chevron-right
+,.delow .icon-plus-sign
+,.delow .icon-minus-sign
+,.delow .icon-remove-sign
+,.delow .icon-ok-sign
+,.delow .icon-question-sign
+,.delow .icon-info-sign
+,.delow .icon-screenshot
+,.delow .icon-remove-circle
+,.delow .icon-ok-circle
+,.delow .icon-ban-circle
+,.delow .icon-arrow-left
+,.delow .icon-arrow-right
+,.delow .icon-arrow-up
+,.delow .icon-arrow-down
+,.delow .icon-share-alt
+,.delow .icon-resize-full
+,.delow .icon-resize-small
+,.delow .icon-plus
+,.delow .icon-minus
+,.delow .icon-asterisk
+,.delow .icon-exclamation-sign
+,.delow .icon-gift
+,.delow .icon-leaf
+,.delow .icon-fire
+,.delow .icon-eye-open
+,.delow .icon-eye-close
+,.delow .icon-warning-sign
+,.delow .icon-plane
+,.delow .icon-calendar
+,.delow .icon-random
+,.delow .icon-comment
+,.delow .icon-magnet
+,.delow .icon-chevron-up
+,.delow .icon-chevron-down
+,.delow .icon-retweet
+,.delow .icon-shopping-cart
+,.delow .icon-folder-close
+,.delow .icon-folder-open
+,.delow .icon-resize-vertical
+,.delow .icon-resize-horizontal
+,.delow .icon-hdd
+,.delow .icon-bullhorn
+,.delow .icon-bell
+,.delow .icon-certificate
+,.delow .icon-thumbs-up
+,.delow .icon-thumbs-down
+,.delow .icon-hand-right
+,.delow .icon-hand-left
+,.delow .icon-hand-up
+,.delow .icon-hand-down
+,.delow .icon-circle-arrow-right
+,.delow .icon-circle-arrow-left
+,.delow .icon-circle-arrow-up
+,.delow .icon-circle-arrow-down
+,.delow .icon-globe
+,.delow .icon-wrench
+,.delow .icon-tasks
+,.delow .icon-filter
+,.delow .icon-briefcase
+,.delow .icon-fullscreen{
+  _float:none;
+}
+.table .icon-glass
+,.table .icon-music
+,.table .icon-search
+,.table .icon-envelope
+,.table .icon-heart
+,.table .icon-star
+,.table .icon-star-empty
+,.table .icon-user
+,.table .icon-film
+,.table .icon-th-large
+,.table .icon-th
+,.table .icon-th-list
+,.table .icon-ok
+,.table .icon-remove
+,.table .icon-zoom-in
+,.table .icon-zoom-out
+,.table .icon-off
+,.table .icon-signal
+,.table .icon-cog
+,.table .icon-trash
+,.table .icon-home
+,.table .icon-file
+,.table .icon-time
+,.table .icon-road
+,.table .icon-download-alt
+,.table .icon-download
+,.table .icon-upload
+,.table .icon-inbox
+,.table .icon-play-circle
+,.table .icon-repeat
+,.table .icon-refresh
+,.table .icon-list-alt
+,.table .icon-lock
+,.table .icon-flag
+,.table .icon-headphones
+,.table .icon-volume-off
+,.table .icon-volume-down
+,.table .icon-volume-up
+,.table .icon-qrcode
+,.table .icon-barcode
+,.table .icon-tag
+,.table .icon-tags
+,.table .icon-book
+,.table .icon-bookmark
+,.table .icon-print
+,.table .icon-camera
+,.table .icon-font
+,.table .icon-bold
+,.table .icon-italic
+,.table .icon-text-height
+,.table .icon-text-width
+,.table .icon-align-left
+,.table .icon-align-center
+,.table .icon-align-right
+,.table .icon-align-justify
+,.table .icon-list
+,.table .icon-indent-left
+,.table .icon-indent-right
+,.table .icon-facetime-video
+,.table .icon-picture
+,.table .icon-pencil
+,.table .icon-map-marker
+,.table .icon-adjust
+,.table .icon-tint
+,.table .icon-edit
+,.table .icon-share
+,.table .icon-check
+,.table .icon-move
+,.table .icon-step-backward
+,.table .icon-fast-backward
+,.table .icon-backward
+,.table .icon-play
+,.table .icon-pause
+,.table .icon-stop
+,.table .icon-forward
+,.table .icon-fast-forward
+,.table .icon-step-forward
+,.table .icon-eject
+,.table .icon-chevron-left
+,.table .icon-chevron-right
+,.table .icon-plus-sign
+,.table .icon-minus-sign
+,.table .icon-remove-sign
+,.table .icon-ok-sign
+,.table .icon-question-sign
+,.table .icon-info-sign
+,.table .icon-screenshot
+,.table .icon-remove-circle
+,.table .icon-ok-circle
+,.table .icon-ban-circle
+,.table .icon-arrow-left
+,.table .icon-arrow-right
+,.table .icon-arrow-up
+,.table .icon-arrow-down
+,.table .icon-share-alt
+,.table .icon-resize-full
+,.table .icon-resize-small
+,.table .icon-plus
+,.table .icon-minus
+,.table .icon-asterisk
+,.table .icon-exclamation-sign
+,.table .icon-gift
+,.table .icon-leaf
+,.table .icon-fire
+,.table .icon-eye-open
+,.table .icon-eye-close
+,.table .icon-warning-sign
+,.table .icon-plane
+,.table .icon-calendar
+,.table .icon-random
+,.table .icon-comment
+,.table .icon-magnet
+,.table .icon-chevron-up
+,.table .icon-chevron-down
+,.table .icon-retweet
+,.table .icon-shopping-cart
+,.table .icon-folder-close
+,.table .icon-folder-open
+,.table .icon-resize-vertical
+,.table .icon-resize-horizontal
+,.table .icon-hdd
+,.table .icon-bullhorn
+,.table .icon-bell
+,.table .icon-certificate
+,.table .icon-thumbs-up
+,.table .icon-thumbs-down
+,.table .icon-hand-right
+,.table .icon-hand-left
+,.table .icon-hand-up
+,.table .icon-hand-down
+,.table .icon-circle-arrow-right
+,.table .icon-circle-arrow-left
+,.table .icon-circle-arrow-up
+,.table .icon-circle-arrow-down
+,.table .icon-globe
+,.table .icon-wrench
+,.table .icon-tasks
+,.table .icon-filter
+,.table .icon-briefcase
+,.table .icon-fullscreen{
+_margin-left:0px;
+_margin-top:0px;
+_float:left;
+}
+.checkbox input,#usergroupchk_create .checkbox input,#accountchkEdit .checkbox input,#accountchk_create .checkbox input,#usergroupchk_edit .checkbox input,#usergroupchkEdit .checkbox input,#createFormId .checkbox input{_width:30px !important;_float:left;}
+
+.checkbox #sexId,#form_previewId .checkbox input{_width:20px !important;_float:left;}
+#timingSendCheckbox{_width:20px !important;_float:right;_margin-top:-20px;}
+#accountcreate,#usercreate,#usergroupcreate,#rolecreate,#edit_dialogId,#edit_dialogId{_width:94% !important;}
+.oep{width:600px;}
+#create_dialogId,#create_dialogId{_width:95% !important;}
+#contactDialogId{_width:95.4% !important;}
+.idak .checkbox{display:inline-block;_width:75px !important;_display:inline-block;}
+.idap .checkbox{display:inline-block;_width:145px !important;_float:left;}
+.tooltip{_white-space:nowrap;}
+.tooltip.right .tooltip-arrow{_display:none;}
+.tooltip.left .tooltip-arrow{_display:none;}
+.nav-list > li > a{*width:auto;*display:inline-block;_display:block;*margin-left:0px;}
+#contactDialogId,#accountcreate,#contactImportId,#contactExportId,#conlistDialogId,#create_dialogId,#inBoxDialogId,
+#outboxExport_dialogId,#create_dialogId,#rolecreate,#export_dialogId,#taskReportExportId,#usercreate,#exportExcelId,
+#usergroupcreate,#updatePasswordId2,#edit_dialogId{*display:none;}
+#accountPageId,#rolePageId,#usergrpPageId,#usermanagerPageId,#pageId,#smsTaskPageId{width:30px !important;text-align:center;}
+#accountSortFormId,#roleSortFormId,#usergrpSortFormId,#usermanagerSortFormId,#taskSortFormId,#outSortFormId,#inSortFormId,#sortFormId,#smsTaskSortFormId{margin-left:20px;margin-top:10px;}
+.pagination ul li,a .active{_border:none 0px;_cursor:pointer;}
+#userInfoFormId legend{_width:100px;_border:0px none;}
+#exitFormId{margin:0px;}
+.weop .checkbox{width:100px;display:inline-block;}
+.accessDeniedbg{background:#e1dfe0 url(../images/accessDenied.png) center top no-repeat;}
+#mmsFile,#voiceFile{width:160px;}
+
+#element td{white-space:pre;}
