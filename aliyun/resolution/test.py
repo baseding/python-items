@@ -3,12 +3,7 @@
 import json
 import ruamel.yaml as yaml
 from aliyunsdkcore.client import AcsClient
-from aliyunsdkcore.acs_exception.exceptions import ClientException
-from aliyunsdkcore.acs_exception.exceptions import ServerException
 from aliyunsdkalidns.request.v20150109 import UpdateDomainRecordRequest, DescribeDomainRecordsRequest, DescribeDomainRecordInfoRequest, AddDomainRecordRequest, DescribeDomainsRequest
-
-#from aliyunsdkecs.request.v20140526 import DescribeInstancesRequest
-#from aliyunsdkecs.request.v20140526 import StopInstanceRequest
 
 # 1. Create AcsClient Instantance
 client = AcsClient(
@@ -20,6 +15,7 @@ client = AcsClient(
 # 2. Create request, with params 
 request = DescribeDomainsRequest.DescribeDomainsRequest()
 request.set_accept_format('json')
+print request
 
 
 # 3. Send API request,and print response 
@@ -27,7 +23,6 @@ request.set_accept_format('json')
 #response = json.loads(client.do_action_with_exception(request)).get('Domains').get('DomainId')
 response = yaml.safe_load(client.do_action_with_exception(request)).get('Domains')
 
-print(response)
+print response
 print response["Domain"][0]
 print response["Domain"][0]["DomainName"]
-

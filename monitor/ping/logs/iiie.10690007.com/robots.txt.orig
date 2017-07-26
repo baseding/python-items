@@ -20,8 +20,8 @@
 	<LINK media=screen href="jqueryalert/jquery.alerts.css" type=text/css rel=stylesheet>
     
     
-<script type="text/javascript" src="/js/tagJs.js?v=20170613232634"></script>
-<script type="text/javascript" src="/js/emms.js?v=20170613232634"></script>
+<script type="text/javascript" src="/js/tagJs.js?v=20170712212041"></script>
+<script type="text/javascript" src="/js/emms.js?v=20170712212041"></script>
 <script type="text/javascript" src="/js/common.js"></script>
     <!--[if IE 6]>
     <link rel="stylesheet" href="css/ie6.css">
