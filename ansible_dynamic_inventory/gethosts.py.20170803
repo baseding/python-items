@@ -6,19 +6,14 @@ ANSIBLE_INV = {
     "monitor": {
         "hosts": ["10.1.200.101", "10.0.50.205"],
         "vars": {
-            "core1": {"corename":"core1","hostip":"10.1.200.101","bossname":"boss1","path":"/home/mlink/esmscore1","timestart":"00","timestart":"24","frequency":"1","mailto":"yfding@mail.etonenet.com;baseding@qq.com"},
-            "core2": {"corename":"core2","hostip":"10.1.50.205","bossname":"boss2","path":"/home/mlink/esmscore2","timestart":"00","timestart":"24","frequency":"1","mailto":"yfding@mail.etonenet.com;baseding@qq.com"},
+            "core1": {"corename":"core1","hostip":"10.1.200.101","bossname":"boss1","timestart":"00","timestart":"24","frequency":"1","mailto":"yfding@mail.etonenet.com;baseding@qq.com"},
+            "core2": {"corename":"core2","hostip":"10.1.50.205","bossname":"boss2","timestart":"00","timestart":"24","frequency":"1","mailto":"yfding@mail.etonenet.com;baseding@qq.com"},
         }
     },
-    'ceph': {
-        'hosts': ["10.1.0.171", "10.1.0.172","10.1.0.175"],
-        'vars': {"path":"/root/.monitor/ceph_log"
-        }
-    },
-    'switch': {
+    'local': {
         'hosts': ['127.0.0.1'],
         'vars': {'test': 'Null'}
-    },
+    }
 } 
 
 HOST_VARS = {
